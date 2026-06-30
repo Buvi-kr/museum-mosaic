@@ -131,15 +131,21 @@
     </header>
 
     <!-- Main Canvas -->
-    <main class="w-full max-w-md mt-24 mb-32 flex flex-col gap-8 relative z-10">
+    <main class="w-full max-w-md mt-24 mb-16 flex flex-col gap-8 relative z-10">
         <!-- Initial Upload State -->
         <section class="flex flex-col items-center gap-8 w-full animate-[fadeIn_0.5s_ease-in-out]" id="state-initial">
             <div class="text-center space-y-2">
                 <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">나만의 별 만들기</h1>
                 <p class="font-body-md text-body-md text-on-surface-variant">사진을 촬영하거나 선택하여 우주 갤러리에 추가하세요.</p>
+                <div class="mt-4 inline-block bg-tertiary-container/30 border border-tertiary/40 rounded-full px-4 py-2">
+                    <p class="text-tertiary text-sm font-semibold flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">screen_rotation</span>
+                        가로 사진을 올리시면 더 꽉 차고 예쁘게 나옵니다!
+                    </p>
+                </div>
             </div>
             
-            <button class="w-full aspect-square max-w-[280px] glass-card glow-interact rounded-[2rem] flex flex-col items-center justify-center gap-6 group relative overflow-hidden" onclick="document.getElementById('hidden-file-input').click()">
+            <button class="w-full aspect-square max-w-[280px] glass-card glow-interact rounded-[2rem] flex flex-col items-center justify-center gap-6 group relative overflow-hidden mt-4" onclick="document.getElementById('hidden-file-input').click()">
                 <div class="absolute inset-0 bg-gradient-to-tr from-tertiary-container/30 to-transparent opacity-0 group-active:opacity-100 transition-opacity duration-300"></div>
                 <span class="material-symbols-outlined text-[80px] text-tertiary group-active:scale-90 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">
                     photo_camera
@@ -178,34 +184,12 @@
                 <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary">성공!</h2>
                 <p class="font-body-lg text-body-lg text-on-surface">대형 화면에서 당신의 사진을 찾아보세요.</p>
             </div>
-            <div class="w-full max-w-[200px] aspect-video glass-card rounded-lg p-unit flex gap-mosaic-gap opacity-80 mt-4 overflow-hidden relative">
-                <!-- Decorative mini mosaic representation -->
-                <div class="flex-1 bg-surface-variant/50 rounded-sm"></div>
-                <div class="flex-1 bg-tertiary/30 rounded-sm animate-pulse" id="success-thumb-container" style="background-size: cover; background-position: center;"></div>
-                <div class="flex-1 bg-surface-variant/50 rounded-sm"></div>
-            </div>
             <button class="mt-8 px-8 py-4 bg-tertiary-container text-on-tertiary-container rounded-full font-body-lg text-body-lg font-bold glow-interact flex items-center gap-2" onclick="resetFlow()">
                 <span class="material-symbols-outlined">replay</span>
                 다시 참여하기
             </button>
         </section>
     </main>
-
-    <!-- BottomNavBar -->
-    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-20 bg-surface-container/60 backdrop-blur-lg rounded-t-xl border-t border-outline-variant/20 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] md:hidden">
-        <a class="flex flex-col items-center justify-center bg-tertiary-container text-on-tertiary-container rounded-full px-6 py-1 active:scale-110 transition-transform duration-200" href="#">
-            <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
-            <span class="font-label-sm text-label-sm mt-1">Capture</span>
-        </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 active:scale-110 transition-transform duration-200" href="#">
-            <span class="material-symbols-outlined text-[24px]">stars</span>
-            <span class="font-label-sm text-label-sm mt-1">My Stars</span>
-        </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 active:scale-110 transition-transform duration-200" href="#">
-            <span class="material-symbols-outlined text-[24px]">info</span>
-            <span class="font-label-sm text-label-sm mt-1">Info</span>
-        </a>
-    </nav>
 
     <script>
         async function handleFileSelect(event) {

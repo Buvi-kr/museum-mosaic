@@ -261,9 +261,70 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
       totalSlots:  db.slots.length,
     });
 
+    // --- [NEW] 무한 사이클: 12칸 완성 시 자동 캡처 및 리셋 로직 ---
+    if (db.slots.filter(s => s.filled).length === db.slots.length) {
+      console.log('🌟 [SYSTEM] 모자이크 완성! 자동 병합 및 보관 시작...');
+      io.emit('mosaic_complete'); // 프론트엔드에 완성 이벤트 브로드캐스트
+
+      const completionsDir = path.join(__dirname, '../history/completions');
+      if (!fs.existsSync(completionsDir)) {
+        fs.mkdirSync(completionsDir, { recursive: true });
+      }
+
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const finalImagePath = path.join(completionsDir, `mosaic_${timestamp}.jpg`);
+
+      // 병합할 이미지 배열 준비
+      const compositeInputs = db.slots.map(s => {
+        const g = CONFIG.grid.find(gridItem => gridItem.id === s.id);
+        const left = Math.round(g.x * CONFIG.canvas.width);
+        const top = Math.round(g.y * CONFIG.canvas.height);
+        return {
+          input: path.join(UPLOAD_DIR, path.basename(s.imagePath)),
+          left: left,
+          top: top
+        };
+      });
+
+      // 백그라운드에서 비동기로 1920x1080 캔버스에 병합
+      sharp({
+        create: {
+          width: CONFIG.canvas.width,
+          height: CONFIG.canvas.height,
+          channels: 4,
+          background: { r: 0, g: 0, b: 0, alpha: 1 }
+        }
+      })
+      .composite(compositeInputs)
+      .jpeg({ quality: 95 })
+      .toFile(finalImagePath)
+      .then(() => {
+        console.log(`[+] 완성본 영구 보관 완료: ${finalImagePath}`);
+      })
+      .catch(err => {
+        console.error('[ERROR] 완성본 병합 실패:', err);
+      });
+
+      // 5초 뒤 화면 및 DB 초기화
+      setTimeout(() => {
+        console.log('[SYSTEM] 화면 및 데이터베이스 초기화(리셋)...');
+        initDB(); // DB 파일 삭제 후 새로 생성
+        // 기존 업로드된 썸네일들 삭제
+        const files = fs.readdirSync(UPLOAD_DIR);
+        for (const file of files) {
+          if (file.startsWith('thumb_')) {
+            try { fs.rmSync(path.join(UPLOAD_DIR, file), { force: true }); } catch (e) {}
+          }
+        }
+        io.emit('reset'); // 프론트엔드 화면 비우기 지시
+      }, 5000);
+    }
+
   } catch (err) {
     console.error('[UPLOAD ERROR]', err);
-    res.status(500).json({ ok: false, message: '서버 오류' });
+    if (!res.headersSent) {
+      res.status(500).json({ ok: false, message: '서버 오류' });
+    }
   }
 });
 
