@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cosmos Mosaic - Exhibition Display</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#572ba0",
+                      "error-container": "#93000a",
+                      "surface-container-lowest": "#0b0f10",
+                      "primary-container": "#0b0e14",
+                      "inverse-primary": "#5c5e66",
+                      "tertiary": "#d3bbff",
+                      "primary-fixed": "#e1e2eb",
+                      "on-primary-fixed-variant": "#44474e",
+                      "on-tertiary": "#3f0689",
+                      "primary": "#c4c6cf",
+                      "surface": "#101415",
+                      "inverse-surface": "#e0e3e5",
+                      "on-secondary-fixed": "#001a42",
+                      "on-primary-fixed": "#191c22",
+                      "secondary-container": "#0566d9",
+                      "on-primary": "#2e3037",
+                      "background": "#101415",
+                      "on-error-container": "#ffdad6",
+                      "surface-container": "#1d2022",
+                      "tertiary-fixed": "#ebdcff",
+                      "on-secondary-container": "#e6ecff",
+                      "surface-dim": "#101415",
+                      "secondary-fixed": "#d8e2ff",
+                      "on-surface": "#e0e3e5",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "surface-tint": "#c4c6cf",
+                      "outline": "#909095",
+                      "on-error": "#690005",
+                      "surface-variant": "#323537",
+                      "surface-container-high": "#272a2c",
+                      "on-secondary": "#002e6a",
+                      "surface-bright": "#363a3b",
+                      "on-surface-variant": "#c6c6cb",
+                      "on-secondary-fixed-variant": "#004395",
+                      "on-tertiary-fixed": "#260059",
+                      "secondary": "#adc6ff",
+                      "tertiary-fixed-dim": "#d3bbff",
+                      "error": "#ffb4ab",
+                      "on-tertiary-container": "#8d64d9",
+                      "primary-fixed-dim": "#c4c6cf",
+                      "outline-variant": "#45474b",
+                      "surface-container-highest": "#323537",
+                      "on-primary-container": "#797b83",
+                      "surface-container-low": "#191c1e",
+                      "on-background": "#e0e3e5",
+                      "tertiary-container": "#150037",
+                      "inverse-on-surface": "#2d3133"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "safe-area": "32px",
+                      "nebula-padding": "64px",
+                      "mosaic-gap": "4px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "display-lg-mobile": ["Inter"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .mix-blend-nebula {
+            mix-blend-mode: hard-light;
+        }
+        
+        @keyframes stellarPop {
+            0% { transform: scale(0.9); opacity: 0; filter: brightness(2) contrast(1.5); box-shadow: 0 0 0 rgba(211,187,255,0); }
+            40% { transform: scale(1.02); opacity: 1; filter: brightness(1.2) contrast(1.1); box-shadow: 0 0 30px rgba(211,187,255,0.6); }
+            100% { transform: scale(1); opacity: 0.85; filter: brightness(1) contrast(1); box-shadow: 0 0 10px rgba(211,187,255,0); }
+        }
+
+        .animate-stellar-pop {
+            animation: stellarPop 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation-delay: 0.5s;
+            opacity: 0; /* initial state before animation */
+        }
+        
+        /* Subtle pulse for the outline */
+        @keyframes outlinePulse {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(211,187,255,0.4)); opacity: 0.7; }
+            50% { filter: drop-shadow(0 0 15px rgba(211,187,255,0.8)); opacity: 1; }
+        }
+        .outline-glow {
+            animation: outlinePulse 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface h-screen w-screen overflow-hidden relative font-body-lg antialiased">
+<!-- Deep Space Nebula Background -->
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-60 mix-blend-screen z-0" data-alt="A vast, immersive deep space nebula in ultra-high resolution. The scene is dominated by deep cosmic blacks and rich indigo hues, illuminated by soft, glowing starlight in shades of Starlight Blue and Deep Violet. The atmosphere is ethereal, mysterious, and awe-inspiring, serving as a dark, mystical canvas for a high-end digital art exhibition." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCoVVVq_G4SSlDzUzY35TFxMHl4SrldmN1Mcw8SAlWHrYScAOw0VD8bTbs5Dyym7DuFsUfTk3eD_D7TsHUYyPYNc_nJto7JwtnzthoyqvJGBrVmW2AXE0h_SEBOrPgUhELaXHuLmkIPx39Oit5TZQHoXJD9jElEx70hNRn2mm_i5iV-x1jmkKWXkFP3ds2TW1WqcQxtVJY7eHpeZakllINGxCfWwZxrn2teEsuOmGgTNHk_8JKc1d62zR90zKTTOpWsFHuBfK8KOPB')"></div>
+<!-- Additional dark gradient to ensure high contrast for the grid -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/80 to-transparent z-0"></div>
+<!-- Main Exhibition Canvas (7x4 Grid) -->
+<!-- Applying Safe Margin via padding -->
+<div class="relative z-10 w-full h-full p-nebula-padding flex items-center justify-center">
+<!-- Grid Container -->
+<div class="w-full h-full grid grid-cols-7 grid-rows-4 gap-mosaic-gap relative">
+<!-- Glowing Outline Overlay defining the Telescope Silhouette -->
+<!-- Drawn over the grid to connect the active slots conceptually -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-20 outline-glow" preserveaspectratio="none" viewbox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
+<!-- Abstract Telescope Shape paths aligning roughly with the active grid cells below -->
+<path d="M220 50 L480 50 L480 150 L220 150 Z" fill="none" stroke="rgba(211,187,255,0.6)" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<path d="M120 150 L580 150 L580 250 L120 250 Z" fill="none" stroke="rgba(211,187,255,0.6)" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<path d="M320 250 L380 250 L380 300 L320 300 Z" fill="none" stroke="rgba(211,187,255,0.6)" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<path d="M220 300 L480 300" fill="none" stroke="rgba(211,187,255,0.6)" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+<!-- Row 1 -->
+<div class="col-start-1 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-2 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<!-- Active Telescope Part: Lens/Front (Cols 3,4,5) -->
+<div class="col-start-3 relative rounded-lg overflow-hidden border-2 border-tertiary/20 shadow-[0_0_15px_rgba(211,187,255,0.1)] group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-80 group-hover:opacity-100 transition-opacity duration-700" data-alt="A mesmerizing, abstract long-exposure photograph of a star trail, seamlessly blending vibrant purples and bright starlight blues. The composition is dynamic yet serene, perfectly capturing the theme of an ethereal cosmos mosaic for a dark-mode, glassmorphic digital exhibition. High fidelity, minimalist art style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5V-4Y3BFyO5pKVSaxZy4bqgkmH4R9ddCJRRX23ZJckH0stH82AWlZ568QO-UM9yU1nohnFvyLVcaL6uCjKo2M52Ko_3aZpfSwK2ya01QMVG3Ohbn1rs0NNlS2LTThtt5X72X6zIv38DoVTaV7KLK4Url-WvkMERYxsQJPWGrj2kHxpL_IjaEykyUJ3ASPbPfvJIqGMtTspTnzAw17AVqbkHMLzC77vRiKY4dPOLxsTRamHBONJVRmvCRrna_EOf-sERSdSzxvbtFy')"></div>
+<div class="absolute inset-0 bg-primary-container/20"></div>
+</div>
+<!-- NEW PHOTO ENTRY ANIMATION (Center Lens) -->
+<div class="col-start-4 relative rounded-lg overflow-hidden border-2 border-secondary/40 shadow-[0_0_20px_rgba(173,198,255,0.2)] animate-stellar-pop z-30">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-90" data-alt="A breathtaking, close-up astrophotography shot of a glowing nebula gas cloud, rich in deep violet and iridescent secondary blue tones. The image feels incredibly deep and luminous, serving as a striking focal point newly added to a collaborative space mosaic installation. Ethereal, high-contrast, modern aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5qIHpwHoXwVfb_knO4Eahb36UUgYGSBDc4ITn57Z6_JNGqCcqMYYcskUgu1GFeXAPxbdPhrM_K0BKEa-7qHfHgV0IyR1jnpB75zNFGO6sDlsTSMfgzHuy3fi4rKePAcvnDOYVLNUIMMjAkE_D88V_5Pwjja0jJCyOhjyMqeggwNCnlY54kUNPxUB7Kfs_G24oy6odSEz6sv_axT3J42LPeEEe3kOcXc-cSgd10doEB7oatN-Gb-9gsh3Kz-vSB_yXpq5czGfxPO3q')"></div>
+<!-- Status Chip for New Entry -->
+<div class="absolute top-4 right-4 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-3 py-1 rounded-full animate-pulse shadow-lg backdrop-blur-md border border-secondary/30">
+                    New Discovery
+                </div>
+</div>
+<div class="col-start-5 relative rounded-lg overflow-hidden border-2 border-tertiary/20 shadow-[0_0_15px_rgba(211,187,255,0.1)] group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-80 group-hover:opacity-100 transition-opacity duration-700" data-alt="An artistic interpretation of a glowing constellation against a pitch-black cosmic void. The stars are depicted as soft, luminous white nodes connected by faint, ghostly blue lines. The image perfectly integrates into a minimalist, dark-themed glassmorphism UI gallery. Majestic and subtle." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBxbG4Lxo6-2jUoTIP1U0dBUF1h0ePBgPpp69opJNQuBJP2Pa1uzQqK46KM3LMXvu6uia2s1zkJvJNXw8zp0XsnC-NrE9fPqHtTyaL9TJcvpeq7yt0Mmd0hiiULvKXXq-YaZTdmKp8iUVjS91J3qHYzilyPRJRpkU3BKiqN7032DcxtQpSU-jIVkLEzX8aehN2VFE5MNhjBUV-rP6IYv7m5Xfu2ek1y-1xgzrru4D6m7DrJuujKjI58rRy4mqvr5uVgwS7ZCxm02wl4')"></div>
+<div class="absolute inset-0 bg-primary-container/20"></div>
+</div>
+<div class="col-start-6 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-7 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<!-- Row 2: Main Tube (Cols 2,3,4,5,6) -->
+<div class="col-start-1 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-2 relative rounded-lg overflow-hidden border border-outline-variant/30 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-70 group-hover:opacity-100 transition-opacity duration-700" data-alt="A surreal landscape photograph taken at dusk at Pocheon Art Valley, where the dramatic rocky cliffs silhouette against an emerging starry night sky. The twilight gradient shifts from dark violet to pitch black, fitting harmoniously within a massive interactive digital art mosaic. Ethereal mood." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDYd-E_zyCc3_EWnZ3enxZ9m3aJqf2_0bDbGjLkTQqNVnqKd5vNOfj3gWWy1wksQb-lJshYWRkyAcUOPFdy_X_7XSCbnJDvUZCIhbmA8R01ZM26LteVMEunp2CDj2k20u1PGmiXCyWaIrYhjY1I4bTTJkeKilObArrNgr199ERyBXfIVVS88ASOGP-nHcClVW5uZ34BRhvKSS1T16DsIkCGXmgToPKb3TLFmC3w9hTUBC7ZznjtS12NaD53X1AVqmN4X8CwsB2MgUAX')"></div>
+<div class="absolute inset-0 bg-primary-container/40"></div>
+</div>
+<div class="col-start-3 relative rounded-lg overflow-hidden border border-outline-variant/30 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-75 group-hover:opacity-100 transition-opacity duration-700" data-alt="An abstract, macro shot of shattered glass reflecting faint blue and purple light, reminiscent of stardust or shattered ice in deep space. The aesthetic is extremely minimalist, relying on luminance and deep blacks to create depth in a dark-mode exhibition interface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCxrWeJBqmRxwoZTqNcIk-UwEVJbBnr2fHRrirQFfuWuziaQdRzuNLYgYeIqunHdPZcEFRxVX4NwdhP-ZITWeT1phdn9PXqAfYej3VexsAuHB310b6Yn6nsTQ8H0B7IxFDag-PdaD9wLH2GM14KSCXFIBuvWHvoN_EebdE7UjDkmmagf_ti41cDUXo79BfQulir2_4yVI2cNJTIb8SYKF4v0LlsixOlfb67DQrXEINnRLLvjB32lmTsx5_pkOBIOjvW0YKgDDJLBBUl')"></div>
+<div class="absolute inset-0 bg-primary-container/30"></div>
+</div>
+<div class="col-start-4 relative rounded-lg overflow-hidden border border-outline-variant/30 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-85 group-hover:opacity-100 transition-opacity duration-700" data-alt="A sweeping view of the Milky Way galaxy, captured with a deep exposure that reveals vibrant purples and faint blues amidst the cosmic dust. The image is framed as a critical structural piece of a larger telescope-shaped collage in a high-fidelity digital art installation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCfYzPPrrNatACwMLomuXVdVwdcnc_K0X5ZDDci6qhzYtbvtVjlNbbKi8pUMPP9Ym661MXZuA9e-1tg-7w1vUNqY5Gg1D2dsAydd4Vb6F-Yct4h1Vn8DrRH7AIEE7DzuuE3C1N05TzkXdye2UA2iJp7jFZcVZwSJlE_vY_mLTcnJL114v-CnpwDi1vowdvmtD59kzLiDvE-C8HsPPXmJQ20fXZpelBdOjuOm9gEl8Y-ugHi22jDrlCkONK_uHuv0ZoV6OdYexmxnKbU')"></div>
+<div class="absolute inset-0 bg-primary-container/20"></div>
+</div>
+<div class="col-start-5 relative rounded-lg overflow-hidden border border-outline-variant/30 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-75 group-hover:opacity-100 transition-opacity duration-700" data-alt="A minimalist digital painting of a solitary, glowing moon casting a soft, ethereal white light over an undefined, dark horizon. The artwork is characterized by its smooth gradients and deep contrast, perfectly suited for a multi-screen stargazing exhibition." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCYG5MTEmzMTMLiri1sBMv32hDe0gnyskXgdthz5SUqlXnUkJ-yjJSeGh1o7viWzka4Zu_fbh8sKq_j9Q-QVgC-EvXwOD9prSWUCm95mQKapD9aWDuZuIIskTItBYh_gAHLYkypWVZtSymr8rj47DGDHte0EfabH2R1woKgkfpoc2ADFESSl4GFQ1QvpxTBa0C3InJ9Y5DNK14ZH5G1jH_C7hd4Mj14vnZkrjcZTrmh0JCj8duwCz6tL2jvTRGl5yQsIB0FAweQp_Q1')"></div>
+<div class="absolute inset-0 bg-primary-container/30"></div>
+</div>
+<div class="col-start-6 relative rounded-lg overflow-hidden border border-outline-variant/30 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-70 group-hover:opacity-100 transition-opacity duration-700" data-alt="A striking silhouette of a modern observatory dome against a backdrop of deep, star-filled space. The composition uses a strict palette of cosmic black and starlight blue, blending organically into a larger glassmorphic UI grid layout. High-end, majestic vibe." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDrGWRmYzONLdDqr5mYdO3j8x5ZrAM2BjwYgu-tHzSJtKMQ5w1TMiixYKtqx9lmiXHAr412YzfljeywvtYUn6QTKXLFuE_3OA9xrVi50ATCjNrmYQZaWVEguqu4FZ3druWzaROpRF8VzgTZ5aUBnQnTK8fnKaybBN5zJwxKJZFwukYSKottlRDW-r2yDfsTuilRs2AE8TFg_DE_Vg93KcDAHOr7_zK4notLmdFF1yjpgpC9eUTxYO5_NuEcG_3BD4MfyCoXzP0L9VHI')"></div>
+<div class="absolute inset-0 bg-primary-container/40"></div>
+</div>
+<div class="col-start-7 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<!-- Row 3: Mount (Col 4) -->
+<div class="col-start-1 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-2 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-3 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-4 relative rounded-lg overflow-hidden border border-outline-variant/30 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-70 group-hover:opacity-100 transition-opacity duration-700" data-alt="An abstract interplay of light and shadow, featuring geometric beams of soft blue light intersecting in a dark void. The imagery suggests connectivity and structure, acting as the visual anchor or 'mount' within a larger celestial photo mosaic. Minimalist and immersive." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBkB27w8H_tEJ-DHGEUrwMG8y1xpq4YKRWsd_5lYC40Gds7iRG4FbyQzLVgMG1HGZlc79hW7-AjDTwhSK1ADm0398WWd7n38jAJ2UqRDwahzNM_eERHM_tUSZTZHCCM0_gmrrkCHSeU4gL49D7-o_YdD-yBZzHmODEFhKtasaMGV1Jp_TrVx2MJjwUtBnqyXqMiyq5CAG5ZpXA8AtK7a0pssi4aha35U-fNwndrzkvQWH1Dzzdw8X_sOFtvLSgyUHmo6YnFc2uY034x')"></div>
+<div class="absolute inset-0 bg-primary-container/50"></div>
+</div>
+<div class="col-start-5 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-6 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-7 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<!-- Row 4: Tripod Base (Cols 3, 4, 5) -->
+<div class="col-start-1 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-2 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-3 relative rounded-lg overflow-hidden border border-outline-variant/20 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-60 group-hover:opacity-90 transition-opacity duration-700" data-alt="A moody, low-key photograph of dark metallic textures reflecting a faint, distant nebula light. The image provides a sense of solid grounding and structural foundation, fitting perfectly as a supporting element at the base of a digital telescope mosaic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAXV8vfkKwXmGUh1sr_d-3LsTPUwWpiApnVvl0tjADEYmC_Ad7OUrHgfkw8uy15P8PQoQLyX8cmqTo-Hvy404i67DEYlL5o5s9erlg0Pe-CjJ9hvqjSLhFFN0A2SKivVwAEeIxiqzbl7NcxrqXeHeycSaBavLf8QGX55vHeZAEWJVFCvPSr8OE6T1_ykvWIIWZ07BWcLNmXWCsa3XxAVI0ztB_COxOJBoUbCWoBDdhGouTSDYmNLJlkxo8Aindqgsr8vsHJHOqKUnvA')"></div>
+<div class="absolute inset-0 bg-primary-container/60"></div>
+</div>
+<div class="col-start-4 relative rounded-lg overflow-hidden border border-outline-variant/20 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-50 group-hover:opacity-80 transition-opacity duration-700" data-alt="A symmetrical, architectural shot of an ancient stone pathway at night, barely illuminated by starlight. The deep blacks and subtle grey tones create a sense of history and grounding, contrasting beautifully with the vibrant cosmos above in the digital collage." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCh51cJpfodlIvwTjpduGBC04ouJUSG0QLGxgCkhFEfC-a9wnQ0eByATteCZvx8DQrQY1om5UaXvN4iqfPQ83OdG5RXZ18h9e29wVqoof7PGX1u4NNgzJKq-Do8YO9JE669fxpOMFGepNT9W4FWP_TnhKr7ucHKsjwpuaK22fsMciflfuIfo26ME544mnBE5id1Tdf-CMVVkqsqLi3Ud0gc1py8Fam2LhGkcz4RUn-kHVsH9_091bQm-dr1MMZzduwyFOo1wUsYn7c7')"></div>
+<div class="absolute inset-0 bg-primary-container/70"></div>
+</div>
+<div class="col-start-5 relative rounded-lg overflow-hidden border border-outline-variant/20 shadow-lg group">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-nebula opacity-60 group-hover:opacity-90 transition-opacity duration-700" data-alt="An abstract visualization of digital data flowing downwards, rendered in muted, deep indigo and charcoal tones. The aesthetic is heavily subdued and minimalist, acting as a quiet structural pillar in the lower section of an enormous starry mosaic display." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDSTTAo5hnzMWAQhAzwOT8qYfIWyCEjyuTdrSd9ssVzyWwS3VDKtJ-3ZAobPMYBO7EDuDsopITWv7T4ahEPt1twuA0C-B6TNefHmJQ1676DndKkPnAXV83sMg6yo5MSovkuJxLIi254QNzzL-ZRIWe2d2c8YoW4LADqk6JeMDJmq0cX0uUY62cgIC7_UUmVyeZ9nyfA1A463FmDQRgqfEV_6UFkoT54ikBzj7ZMxps8IdS4sWEkvmESCwWoSeeje4FvWY_TV2yXz-yH')"></div>
+<div class="absolute inset-0 bg-primary-container/60"></div>
+</div>
+<div class="col-start-6 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+<div class="col-start-7 bg-surface-container/5 rounded-lg border border-outline-variant/10 backdrop-blur-sm"></div>
+</div>
+</div>
+</body></html>

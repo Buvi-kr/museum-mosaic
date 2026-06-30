@@ -1,0 +1,16 @@
+{
+  "name": "museum-mosaic",
+  "version": "1.0.0",
+  "description": "포천아트밸리 천문과학관 포토 모자이크 시스템",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.4",
+    "socket.io": "^4.7.5"
+  }
+}

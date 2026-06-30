@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+*.log
+
+# Uploaded content and backups
+public/uploads/
+uploads/
+
+# Binaries
+bin/
+*.exe
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Project specific unused/history
+history/
+.env
