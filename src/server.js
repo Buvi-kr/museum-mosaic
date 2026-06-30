@@ -192,6 +192,10 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
       }
     }
 
+    if (!req.file) {
+      return res.status(400).json({ ok: false, message: '업로드된 파일이 없습니다.' });
+    }
+
     // 원본 경로 및 최종 저장 썸네일 경로
     const originalPath  = req.file.path;
     const thumbFilename = `thumb_${req.file.filename}`;
