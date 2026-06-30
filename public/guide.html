@@ -1,204 +1,145 @@
 <!DOCTYPE html>
-<html class="dark" lang="ko">
+<html lang="ko">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Cosmos Mosaic - Guide Screen</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-    
-    <!-- 실시간 통신 및 QR코드 라이브러리 추가 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가이드 화면 - 우주 모자이크</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/qrcode.min.js"></script>
-
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-tertiary-fixed-variant": "#572ba0",
-                        "error-container": "#93000a",
-                        "surface-container-lowest": "#0b0f10",
-                        "primary-container": "#0b0e14",
-                        "inverse-primary": "#5c5e66",
-                        "tertiary": "#d3bbff",
-                        "primary-fixed": "#e1e2eb",
-                        "on-primary-fixed-variant": "#44474e",
-                        "on-tertiary": "#3f0689",
-                        "primary": "#c4c6cf",
-                        "surface": "#101415",
-                        "inverse-surface": "#e0e3e5",
-                        "on-secondary-fixed": "#001a42",
-                        "on-primary-fixed": "#191c22",
-                        "secondary-container": "#0566d9",
-                        "on-primary": "#2e3037",
-                        "background": "#101415",
-                        "on-error-container": "#ffdad6",
-                        "surface-container": "#1d2022",
-                        "tertiary-fixed": "#ebdcff",
-                        "on-secondary-container": "#e6ecff",
-                        "surface-dim": "#101415",
-                        "secondary-fixed": "#d8e2ff",
-                        "on-surface": "#e0e3e5",
-                        "secondary-fixed-dim": "#adc6ff",
-                        "surface-tint": "#c4c6cf",
-                        "outline": "#909095",
-                        "on-error": "#690005",
-                        "surface-variant": "#323537",
-                        "surface-container-high": "#272a2c",
-                        "on-secondary": "#002e6a",
-                        "surface-bright": "#363a3b",
-                        "on-surface-variant": "#c6c6cb",
-                        "on-secondary-fixed-variant": "#004395",
-                        "on-tertiary-fixed": "#260059",
-                        "secondary": "#adc6ff",
-                        "tertiary-fixed-dim": "#d3bbff",
-                        "error": "#ffb4ab",
-                        "on-tertiary-container": "#8d64d9",
-                        "primary-fixed-dim": "#c4c6cf",
-                        "outline-variant": "#45474b",
-                        "surface-container-highest": "#323537",
-                        "on-primary-container": "#797b83",
-                        "surface-container-low": "#191c1e",
-                        "on-background": "#e0e3e5",
-                        "tertiary-container": "#150037",
-                        "inverse-on-surface": "#2d3133"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "safe-area": "32px",
-                        "nebula-padding": "64px",
-                        "mosaic-gap": "4px",
-                        "unit": "8px"
-                    },
-                    "fontFamily": {
-                        "body-lg": ["Inter"],
-                        "body-md": ["Inter"],
-                        "headline-lg": ["Inter"],
-                        "display-lg": ["Inter"],
-                        "headline-xl": ["Inter"],
-                        "display-lg-mobile": ["Inter"],
-                        "label-sm": ["Inter"]
-                    },
-                    "fontSize": {
-                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
-                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
-                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
-                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- node-qrcode 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        .glow-qr {
-            box-shadow: 0 0 30px 10px rgba(173, 198, 255, 0.4);
-            animation: pulse-glow 3s infinite alternate;
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #05050A; /* Deep space black */
+            color: #ffffff;
+            margin: 0;
+            overflow: hidden;
         }
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 20px 5px rgba(173, 198, 255, 0.3); }
-            100% { box-shadow: 0 0 40px 15px rgba(173, 198, 255, 0.6); }
+
+        .stars-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,1), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 80px 70px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 150px 40px, rgba(255,255,255,1), rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.3;
+            z-index: -1;
         }
-        .star-pulse {
-            animation: twinkle 2s infinite ease-in-out;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.4; transform: scale(0.9); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
+
         .glass-panel {
-            background: rgba(11, 14, 20, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(173, 198, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 3rem;
+            box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* QR Code Glow */
+        .glow-qr {
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.8), 0 0 80px rgba(173, 198, 255, 0.4);
+            transition: all 0.5s ease;
         }
     </style>
 </head>
-<body class="bg-background text-on-background w-full h-screen overflow-hidden flex flex-col justify-between selection:bg-secondary-container selection:text-on-secondary-container">
-    <!-- Background Layer -->
-    <div class="fixed inset-0 z-0">
-        <div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDzo-z1EFXH3YP5CRRoo7sufBByFWpZpgecAG-dMTmqPZb0FAMgM1hNoXKfSNmXTUsnJ7Iu4gHCF5kezHnrb9prPEA42Lvx_OVpr_drda5JqAI8ICjdkFyOSDk31mM1woFKkUulkfec5zHe8HzuvAvp6v4ts7mSedTQKzpNZ3XOvbP-tMd5K1AKpA5bW9OlbJm8V-GHPFzjspSny1L-9DUmRxwdPD6e68-hMZmEkdXUwf-MRuO6jswHcO_xYuXxhsbAZrPSYWCmZRAk')"></div>
-        <div class="absolute inset-0 bg-background/40 mix-blend-multiply"></div>
-    </div>
+<body class="min-h-screen flex items-center justify-center p-12 relative">
+    <div class="stars-bg"></div>
 
-    <!-- Main Content -->
-    <main class="relative z-10 flex-grow flex flex-col items-center justify-center px-nebula-padding text-center">
-        <div class="glass-panel rounded-[3rem] p-20 max-w-4xl w-full flex flex-col items-center gap-16 shadow-2xl">
-            <!-- Titles -->
-            <div class="space-y-6">
-                <div class="flex items-center justify-center gap-4 mb-4">
-                    <span class="material-symbols-outlined text-tertiary text-6xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome_mosaic</span>
-                </div>
-                <h2 class="font-display-lg text-display-lg text-secondary tracking-tight">우주의 일부가 되어보세요</h2>
-                <p class="font-headline-lg text-headline-lg text-on-surface-variant max-w-2xl mx-auto">
-                    스마트폰으로 QR코드를 스캔하여<br>아름다운 별자리 조각을 채워주세요.
-                </p>
+    <main class="w-full max-w-5xl glass-panel p-20 flex flex-col items-center text-center gap-16 relative z-10">
+        
+        <!-- Header -->
+        <div class="space-y-4">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300 tracking-tight">
+                우주의 일부가 되어보세요
+            </h1>
+            <p class="text-2xl text-gray-300">
+                아래 QR코드를 스캔하거나 주소를 입력하여 사진을 쏘아올려주세요.
+            </p>
+        </div>
+
+        <!-- QR & URL Area -->
+        <div class="flex flex-col items-center gap-6">
+            <div id="qrcode-container" class="p-6 bg-white rounded-3xl glow-qr">
+                <!-- QR Code canvas will be injected here -->
             </div>
             
-            <!-- QR Code Centerpiece -->
-            <div class="flex flex-col items-center gap-8 mt-4">
-                <div class="p-6 bg-white rounded-[2rem] glow-qr relative" id="qrcode-container">
-                    <!-- QR code will be generated here -->
-                </div>
-                
-                <div class="bg-secondary-container/20 border border-secondary/30 px-10 py-5 rounded-full flex items-center gap-4 mt-8">
-                    <span class="material-symbols-outlined text-tertiary star-pulse text-4xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">stars</span>
-                    <span class="font-headline-lg text-headline-lg text-secondary tracking-wider">
-                        현재 <strong class="text-tertiary text-5xl mx-2" id="participant-count">0</strong>명 참여 중!
-                    </span>
-                </div>
+            <div class="bg-black/50 border border-white/20 px-8 py-4 rounded-full mt-4">
+                <span id="url-text" class="text-3xl font-mono text-indigo-300 tracking-wider">주소를 불러오는 중...</span>
             </div>
         </div>
+
+        <!-- Progress Area -->
+        <div class="w-full max-w-2xl flex flex-col items-center gap-4 mt-8">
+            <div class="flex justify-between w-full px-4 text-xl font-bold text-gray-300">
+                <span>현재 참여자</span>
+                <span class="text-indigo-300"><span id="participant-count" class="text-4xl text-white mx-2">0</span> / 12</span>
+            </div>
+            <div class="w-full h-8 bg-black/60 rounded-full overflow-hidden border border-white/10">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-700 ease-out" style="width: 0%;"></div>
+            </div>
+        </div>
+
     </main>
 
     <script>
         const socket = io();
         const qrContainer = document.getElementById('qrcode-container');
+        const urlText = document.getElementById('url-text');
         const participantCount = document.getElementById('participant-count');
-        let currentQR = null;
+        const progressBar = document.getElementById('progress-bar');
+        
+        const MAX_SLOTS = 12;
+
+        function updateProgress(count) {
+            participantCount.innerText = count;
+            const percentage = (count / MAX_SLOTS) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
 
         // 초기 카운트 조회
         fetch('/api/slots')
             .then(res => res.json())
             .then(data => {
-                if(participantCount) participantCount.innerText = data.totalFilled;
+                updateProgress(data.totalFilled);
             })
             .catch(console.error);
 
-        // QR 생성 이벤트
+        // 터널링 URL 수신 및 QR 생성
         socket.on('tunnel_url', (data) => {
             const uploadUrl = data.url + '/upload.html';
             
-            // 기존 캔버스 제거
-            qrContainer.innerHTML = '<canvas id="qr-canvas" class="rounded-xl"></canvas>';
+            qrContainer.innerHTML = '<canvas id="qr-canvas" class="rounded-2xl"></canvas>';
             const canvas = document.getElementById('qr-canvas');
 
-            // node-qrcode 라이브러리 문법으로 QR 생성
             QRCode.toCanvas(canvas, uploadUrl, {
-                width: 320, // QR 코드를 더 크게(256 -> 320)
+                width: 350,
                 margin: 2,
-                color: {
-                    dark: "#000000",
-                    light: "#ffffff"
-                },
+                color: { dark: "#000000", light: "#ffffff" },
                 errorCorrectionLevel: 'H'
             }, function (error) {
                 if (error) console.error('[QR Error]', error);
             });
+            
+            urlText.innerText = uploadUrl;
         });
 
-        // 새 사진 업로드 시 카운트 업데이트
-        socket.on('new_photo', (data) => {
-            participantCount.innerText = data.totalFilled;
+        // 새 사진 업로드 시
+        socket.on('new_photo', () => {
+            let current = parseInt(participantCount.innerText) || 0;
+            if (current < MAX_SLOTS) {
+                updateProgress(current + 1);
+            }
+        });
+
+        // 12칸 완성 후 부분 리셋 시 (6칸 유지)
+        socket.on('partial_reset', (data) => {
+            const keepCount = data.keepIds ? data.keepIds.length : 0;
+            updateProgress(keepCount);
         });
     </script>
 </body>

@@ -305,18 +305,34 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
         console.error('[ERROR] 완성본 병합 실패:', err);
       });
 
-      // 5초 뒤 화면 및 DB 초기화
+      // 5초 뒤 화면 절반 유지 및 데이터베이스 부분 초기화(리셋)
       setTimeout(() => {
-        console.log('[SYSTEM] 화면 및 데이터베이스 초기화(리셋)...');
-        initDB(); // DB 파일 삭제 후 새로 생성
-        // 기존 업로드된 썸네일들 삭제
+        console.log('[SYSTEM] 화면 절반 유지 및 부분 초기화(리셋)...');
+        
+        // 무작위 6개 슬롯 선택하여 살려두기
+        const filledSlots = db.slots.filter(s => s.filled);
+        const slotsToKeep = filledSlots.sort(() => 0.5 - Math.random()).slice(0, 6);
+        const keepIds = slotsToKeep.map(s => s.id);
+
+        // DB 갱신: keepIds에 없는 슬롯만 비우기
+        db.slots = db.slots.map(s => {
+          if (!keepIds.includes(s.id)) {
+            return { ...s, filled: false, imagePath: null, timestamp: null };
+          }
+          return s;
+        });
+        saveDB(db);
+
+        // 살아남지 못한 썸네일 파일들만 디스크에서 삭제
         const files = fs.readdirSync(UPLOAD_DIR);
+        const keptThumbnames = slotsToKeep.map(s => path.basename(s.imagePath));
         for (const file of files) {
-          if (file.startsWith('thumb_')) {
+          if (file.startsWith('thumb_') && !keptThumbnames.includes(file)) {
             try { fs.rmSync(path.join(UPLOAD_DIR, file), { force: true }); } catch (e) {}
           }
         }
-        io.emit('reset'); // 프론트엔드 화면 비우기 지시
+        
+        io.emit('partial_reset', { keepIds }); // 프론트엔드에 어떤 ID가 살아남았는지 알려줌
       }, 5000);
     }
 

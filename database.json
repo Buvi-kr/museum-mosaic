@@ -3,9 +3,9 @@
   "slots": [
     {
       "id": 0,
-      "filled": false,
-      "imagePath": null,
-      "timestamp": null
+      "filled": true,
+      "imagePath": "/uploads/thumb_1782797658729_6o0i27.jpg",
+      "timestamp": "2026-06-30T05:34:18.755Z"
     },
     {
       "id": 1,
@@ -21,9 +21,9 @@
     },
     {
       "id": 3,
-      "filled": false,
-      "imagePath": null,
-      "timestamp": null
+      "filled": true,
+      "imagePath": "/uploads/thumb_1782797658655_9lipuo.jpg",
+      "timestamp": "2026-06-30T05:34:18.683Z"
     },
     {
       "id": 4,
@@ -39,15 +39,15 @@
     },
     {
       "id": 6,
-      "filled": false,
-      "imagePath": null,
-      "timestamp": null
+      "filled": true,
+      "imagePath": "/uploads/thumb_1782797658968_5jixdm.jpg",
+      "timestamp": "2026-06-30T05:34:18.996Z"
     },
     {
       "id": 7,
-      "filled": false,
-      "imagePath": null,
-      "timestamp": null
+      "filled": true,
+      "imagePath": "/uploads/thumb_1782797658808_6ngqng.jpg",
+      "timestamp": "2026-06-30T05:34:18.841Z"
     },
     {
       "id": 8,
@@ -57,9 +57,9 @@
     },
     {
       "id": 9,
-      "filled": false,
-      "imagePath": null,
-      "timestamp": null
+      "filled": true,
+      "imagePath": "/uploads/thumb_1782797658433_7vo19t.jpg",
+      "timestamp": "2026-06-30T05:34:18.461Z"
     },
     {
       "id": 10,
@@ -69,9 +69,9 @@
     },
     {
       "id": 11,
-      "filled": false,
-      "imagePath": null,
-      "timestamp": null
+      "filled": true,
+      "imagePath": "/uploads/thumb_1782797658351_wwkz70.jpg",
+      "timestamp": "2026-06-30T05:34:18.383Z"
     }
   ]
 }

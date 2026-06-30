@@ -1,217 +1,174 @@
 <!DOCTYPE html>
-<html class="dark" lang="ko">
+<html lang="ko">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-    <title>포천아트밸리 천문과학관 - Upload</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-tertiary-fixed-variant": "#572ba0",
-                        "error-container": "#93000a",
-                        "surface-container-lowest": "#0b0f10",
-                        "primary-container": "#0b0e14",
-                        "inverse-primary": "#5c5e66",
-                        "tertiary": "#d3bbff",
-                        "primary-fixed": "#e1e2eb",
-                        "on-primary-fixed-variant": "#44474e",
-                        "on-tertiary": "#3f0689",
-                        "primary": "#c4c6cf",
-                        "surface": "#101415",
-                        "inverse-surface": "#e0e3e5",
-                        "on-secondary-fixed": "#001a42",
-                        "on-primary-fixed": "#191c22",
-                        "secondary-container": "#0566d9",
-                        "on-primary": "#2e3037",
-                        "background": "#101415",
-                        "on-error-container": "#ffdad6",
-                        "surface-container": "#1d2022",
-                        "tertiary-fixed": "#ebdcff",
-                        "on-secondary-container": "#e6ecff",
-                        "surface-dim": "#101415",
-                        "secondary-fixed": "#d8e2ff",
-                        "on-surface": "#e0e3e5",
-                        "secondary-fixed-dim": "#adc6ff",
-                        "surface-tint": "#c4c6cf",
-                        "outline": "#909095",
-                        "on-error": "#690005",
-                        "surface-variant": "#323537",
-                        "surface-container-high": "#272a2c",
-                        "on-secondary": "#002e6a",
-                        "surface-bright": "#363a3b",
-                        "on-surface-variant": "#c6c6cb",
-                        "on-secondary-fixed-variant": "#004395",
-                        "on-tertiary-fixed": "#260059",
-                        "secondary": "#adc6ff",
-                        "tertiary-fixed-dim": "#d3bbff",
-                        "error": "#ffb4ab",
-                        "on-tertiary-container": "#8d64d9",
-                        "primary-fixed-dim": "#c4c6cf",
-                        "outline-variant": "#45474b",
-                        "surface-container-highest": "#323537",
-                        "on-primary-container": "#797b83",
-                        "surface-container-low": "#191c1e",
-                        "on-background": "#e0e3e5",
-                        "tertiary-container": "#150037",
-                        "inverse-on-surface": "#2d3133"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "safe-area": "32px",
-                        "nebula-padding": "64px",
-                        "mosaic-gap": "4px",
-                        "unit": "8px"
-                    },
-                    "fontFamily": {
-                        "body-lg": ["Inter"],
-                        "body-md": ["Inter"],
-                        "headline-lg": ["Inter"],
-                        "display-lg": ["Inter"],
-                        "headline-xl": ["Inter"],
-                        "display-lg-mobile": ["Inter"],
-                        "label-sm": ["Inter"]
-                    },
-                    "fontSize": {
-                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
-                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
-                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
-                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
-                    }
-                }
-            }
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>별자리 조각 올리기 - 포천아트밸리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: theme('colors.background');
-            color: theme('colors.on-background');
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(211, 187, 255, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(196, 198, 207, 0.08), transparent 25%);
-            background-attachment: fixed;
-            min-height: max(884px, 100dvh);
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #05050A; /* Deep space black */
+            color: #ffffff;
+            margin: 0;
+            overflow-x: hidden;
         }
-        .glass-card {
-            background: rgba(11, 14, 20, 0.6);
+        
+        /* Subtle starry background */
+        .stars-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.6), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,1), rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 100px 100px;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(173, 198, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
-        .glow-interact {
-            box-shadow: 0 0 15px rgba(211, 187, 255, 0.4);
+
+        .btn-glow {
             transition: all 0.3s ease;
         }
-        .glow-interact:active {
-            box-shadow: 0 0 25px rgba(211, 187, 255, 0.7);
-            transform: scale(0.98);
+        .btn-glow:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 40px rgba(173, 198, 255, 0.6);
         }
-        #state-uploading, #state-success { display: none; }
+
+        /* State visibility */
+        .state-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .state-section.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
-    <!-- TopAppBar -->
-    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-4 md:px-nebula-padding h-20 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/20 shadow-none text-primary">
-        <div class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary tracking-tighter truncate">
-            포천아트밸리 천문과학관
-        </div>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 relative">
+    <div class="stars-bg"></div>
+
+    <header class="absolute top-0 w-full py-6 flex flex-col items-center z-50">
+        <h1 class="text-xl font-bold tracking-widest text-indigo-300">COSMOS MOSAIC</h1>
+        <p class="text-sm text-gray-400 mt-1">포천아트밸리 천문과학관</p>
     </header>
 
-    <!-- Main Canvas -->
-    <main class="w-full max-w-md mt-24 mb-16 flex flex-col gap-8 relative z-10">
-        <!-- Initial Upload State -->
-        <section class="flex flex-col items-center gap-8 w-full animate-[fadeIn_0.5s_ease-in-out]" id="state-initial">
-            <div class="text-center space-y-2">
-                <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">나만의 별 만들기</h1>
-                <p class="font-body-md text-body-md text-on-surface-variant">사진을 촬영하거나 선택하여 우주 갤러리에 추가하세요.</p>
-                <div class="mt-4 inline-block bg-tertiary-container/30 border border-tertiary/40 rounded-full px-4 py-2">
-                    <p class="text-tertiary text-sm font-semibold flex items-center gap-2">
-                        <span class="material-symbols-outlined text-sm">screen_rotation</span>
-                        가로 사진을 올리시면 더 꽉 차고 예쁘게 나옵니다!
-                    </p>
+    <main class="w-full max-w-sm mt-12 z-10">
+        
+        <!-- STATE 1: INITIAL UPLOAD -->
+        <section id="state-initial" class="state-section active flex-col items-center text-center gap-8 w-full">
+            <div class="space-y-3">
+                <h2 class="text-3xl font-extrabold text-white">사진을 쏘아올리세요</h2>
+                <p class="text-gray-300 text-base leading-relaxed">
+                    지금 바로 우주의 일부가 되어보세요.
+                </p>
+                <div class="mt-4 inline-flex items-center gap-2 bg-indigo-900/40 border border-indigo-500/30 rounded-full px-5 py-2">
+                    <span class="material-symbols-outlined text-indigo-300 text-sm">screen_rotation</span>
+                    <span class="text-indigo-200 text-sm font-medium">가로 사진을 강력히 추천합니다!</span>
                 </div>
             </div>
-            
-            <button class="w-full aspect-square max-w-[280px] glass-card glow-interact rounded-[2rem] flex flex-col items-center justify-center gap-6 group relative overflow-hidden mt-4" onclick="document.getElementById('hidden-file-input').click()">
-                <div class="absolute inset-0 bg-gradient-to-tr from-tertiary-container/30 to-transparent opacity-0 group-active:opacity-100 transition-opacity duration-300"></div>
-                <span class="material-symbols-outlined text-[80px] text-tertiary group-active:scale-90 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">
+
+            <button onclick="document.getElementById('file-input').click()" class="btn-glow mt-6 w-full aspect-square glass-panel flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 group relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span class="material-symbols-outlined text-8xl text-indigo-400 group-active:scale-90 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">
                     photo_camera
                 </span>
-                <span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface-variant group-active:text-tertiary transition-colors duration-300">
-                    사진 찍기 / 선택
-                </span>
+                <span class="text-xl font-bold text-indigo-200">사진 찍기 / 선택</span>
             </button>
-            <input accept="image/*" class="hidden" id="hidden-file-input" type="file" onchange="handleFileSelect(event)"/>
+            <input accept="image/*" class="hidden" id="file-input" type="file" onchange="handleUpload(event)"/>
         </section>
 
-        <!-- Uploading State -->
-        <section class="flex flex-col items-center gap-12 w-full" id="state-uploading">
-            <div class="text-center space-y-4 w-full">
-                <span class="material-symbols-outlined text-6xl text-secondary animate-pulse" style="font-variation-settings: 'FILL' 1;">
-                    cloud_upload
+        <!-- STATE 2: UPLOADING -->
+        <section id="state-uploading" class="state-section flex-col items-center text-center gap-8 w-full py-10">
+            <div class="space-y-6 w-full">
+                <span class="material-symbols-outlined text-7xl text-indigo-400 animate-bounce" style="font-variation-settings: 'FILL' 1;">
+                    rocket_launch
                 </span>
-                <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">우주로 전송 중...</h2>
+                <h2 class="text-2xl font-bold text-white">우주로 전송 중...</h2>
             </div>
-            <div class="w-full glass-card rounded-full h-4 overflow-hidden relative">
-                <div class="absolute top-0 left-0 h-full bg-secondary w-0 transition-all duration-300 ease-out" id="progress-fill">
-                    <div class="absolute inset-0 bg-white/30 animate-[shimmer_1s_infinite_linear] bg-[length:200%_100%] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+            
+            <div class="w-full glass-panel h-6 p-1 relative overflow-hidden">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full w-0 transition-all duration-300 ease-out relative">
+                    <div class="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)] bg-[length:200%_100%] animate-[shimmer_1.5s_infinite_linear]"></div>
                 </div>
             </div>
-            <p class="font-body-md text-body-md text-secondary" id="progress-text">0%</p>
+            <p id="progress-text" class="text-indigo-200 font-bold text-xl">0%</p>
         </section>
 
-        <!-- Success State -->
-        <section class="flex flex-col items-center gap-8 w-full text-center" id="state-success">
-            <div class="w-32 h-32 rounded-full glass-card flex items-center justify-center glow-interact border-tertiary/50 bg-tertiary-container/20">
-                <span class="material-symbols-outlined text-6xl text-tertiary" style="font-variation-settings: 'FILL' 1;">
+        <!-- STATE 3: SUCCESS -->
+        <section id="state-success" class="state-section flex-col items-center text-center gap-8 w-full py-10">
+            <div class="w-32 h-32 rounded-full glass-panel flex items-center justify-center bg-green-500/10 border-green-500/30">
+                <span class="material-symbols-outlined text-7xl text-green-400" style="font-variation-settings: 'FILL' 1;">
                     check_circle
                 </span>
             </div>
             <div class="space-y-4">
-                <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary">성공!</h2>
-                <p class="font-body-lg text-body-lg text-on-surface">대형 화면에서 당신의 사진을 찾아보세요.</p>
+                <h2 class="text-3xl font-extrabold text-white">전송 완료!</h2>
+                <p class="text-lg text-gray-300">눈앞의 대형 스크린을 확인해보세요.<br>당신의 별이 빛나고 있습니다.</p>
             </div>
-            <button class="mt-8 px-8 py-4 bg-tertiary-container text-on-tertiary-container rounded-full font-body-lg text-body-lg font-bold glow-interact flex items-center gap-2" onclick="resetFlow()">
-                <span class="material-symbols-outlined">replay</span>
-                다시 참여하기
+            
+            <button onclick="resetUI()" class="btn-glow mt-8 w-full py-5 glass-panel bg-indigo-600/20 border-indigo-500/50 flex items-center justify-center gap-3">
+                <span class="material-symbols-outlined text-indigo-300">replay</span>
+                <span class="text-xl font-bold text-indigo-200">새로운 사진 올리기</span>
             </button>
         </section>
+
     </main>
 
     <script>
-        async function handleFileSelect(event) {
+        function switchState(stateId) {
+            document.querySelectorAll('.state-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(stateId).classList.add('active');
+        }
+
+        function resetUI() {
+            document.getElementById('file-input').value = ''; // input 초기화 필수!
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-text').innerText = '0%';
+            switchState('state-initial');
+        }
+
+        async function handleUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            document.getElementById('state-initial').style.display = 'none';
-            document.getElementById('state-uploading').style.display = 'flex';
+            switchState('state-uploading');
             
+            // 시각적 피드백
             let progress = 0;
-            const fill = document.getElementById('progress-fill');
+            const bar = document.getElementById('progress-bar');
             const text = document.getElementById('progress-text');
             
-            // 시각적 피드백을 위한 가짜 프로그레스 바 (최대 90%까지)
             const interval = setInterval(() => {
                 if(progress < 90) {
-                    progress += Math.floor(Math.random() * 15) + 5;
+                    progress += Math.floor(Math.random() * 10) + 5;
                     if(progress > 90) progress = 90;
-                    fill.style.width = `${progress}%`;
+                    bar.style.width = `${progress}%`;
                     text.innerText = `${progress}%`;
                 }
-            }, 300);
+            }, 200);
 
             try {
                 const formData = new FormData();
@@ -226,35 +183,22 @@
                 clearInterval(interval);
                 
                 if (data.ok) {
-                    fill.style.width = `100%`;
+                    bar.style.width = `100%`;
                     text.innerText = `100%`;
                     
                     setTimeout(() => {
-                        document.getElementById('state-uploading').style.display = 'none';
-                        document.getElementById('state-success').style.display = 'flex';
-                        // 작은 모자이크 장식 요소에 실제 업로드 된 사진을 깔아줌
-                        document.getElementById('success-thumb-container').style.backgroundImage = `url(${data.imagePath})`;
-                    }, 500);
+                        switchState('state-success');
+                    }, 600);
                 } else {
-                    alert('업로드 실패: ' + (data.message || '알 수 없는 오류'));
-                    resetFlow();
+                    alert('업로드 실패: ' + (data.message || '오류 발생'));
+                    resetUI();
                 }
             } catch (error) {
                 console.error(error);
                 clearInterval(interval);
-                alert('업로드 중 네트워크 오류가 발생했습니다.');
-                resetFlow();
+                alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+                resetUI();
             }
-        }
-
-        function resetFlow() {
-            document.getElementById('hidden-file-input').value = '';
-            document.getElementById('state-success').style.display = 'none';
-            document.getElementById('state-uploading').style.display = 'none';
-            document.getElementById('progress-fill').style.width = '0%';
-            document.getElementById('progress-text').innerText = '0%';
-            document.getElementById('success-thumb-container').style.backgroundImage = 'none';
-            document.getElementById('state-initial').style.display = 'flex';
         }
     </script>
 </body>

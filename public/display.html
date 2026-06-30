@@ -230,10 +230,31 @@
             }
         });
 
-        // 리셋 이벤트 (DB 비워짐)
-        socket.on('reset', () => {
-            // 화면 새로고침하여 깨끗한 상태로 되돌아감
-            window.location.reload();
+        // 부분 리셋 이벤트 (6칸 유지, 6칸 비우기)
+        socket.on('partial_reset', (data) => {
+            const keepIds = data.keepIds || [];
+            const container = document.getElementById('mosaic-container');
+            
+            // 전체 팝 효과(축하 이펙트) 되돌리기
+            if (container) {
+                container.style.transform = 'scale(1)';
+                container.style.boxShadow = 'none';
+            }
+
+            // 슬롯들 중 keepIds에 없는 것들만 부드럽게 지우기
+            for (let i = 0; i < 12; i++) {
+                if (!keepIds.includes(i)) {
+                    const photoDiv = document.getElementById(`photo-${i}`);
+                    if (photoDiv) {
+                        // 투명하게 페이드아웃
+                        photoDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            photoDiv.style.backgroundImage = 'none';
+                            photoDiv.style.opacity = '1'; // 다음 사진을 위해 투명도 원상복구
+                        }, 700);
+                    }
+                }
+            }
         });
     </script>
 </body>
