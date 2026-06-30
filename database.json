@@ -1,4 +1,101 @@
 {
   "date": "2026-06-30",
-  "slots": []
+  "slots": [
+    {
+      "id": 2,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 3,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 4,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 5,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 8,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 9,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 10,
+      "filled": true,
+      "imagePath": "/uploads/thumb_1782794145296_sfi5e0.jpg",
+      "timestamp": "2026-06-30T04:35:45.365Z"
+    },
+    {
+      "id": 11,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 16,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 17,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 18,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 22,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 23,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 24,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 25,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    },
+    {
+      "id": 26,
+      "filled": false,
+      "imagePath": null,
+      "timestamp": null
+    }
+  ]
 }

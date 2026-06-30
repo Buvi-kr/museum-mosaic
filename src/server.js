@@ -72,7 +72,12 @@ function todayKey() {
 
 function loadDB() {
   if (!fs.existsSync(DB_PATH)) return initDB();
-  try { return JSON.parse(fs.readFileSync(DB_PATH, 'utf8')); }
+  try { 
+    const db = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+    // DB 파일은 있지만 슬롯 배열이 비어있으면 새로 초기화
+    if (!db.slots || db.slots.length === 0) return initDB();
+    return db;
+  }
   catch { return initDB(); }
 }
 
