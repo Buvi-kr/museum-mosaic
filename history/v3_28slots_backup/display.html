@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Cosmos Mosaic - Exhibition Display</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#572ba0",
+                      "error-container": "#93000a",
+                      "surface-container-lowest": "#0b0f10",
+                      "primary-container": "#0b0e14",
+                      "inverse-primary": "#5c5e66",
+                      "tertiary": "#d3bbff",
+                      "primary-fixed": "#e1e2eb",
+                      "on-primary-fixed-variant": "#44474e",
+                      "on-tertiary": "#3f0689",
+                      "primary": "#c4c6cf",
+                      "surface": "#101415",
+                      "inverse-surface": "#e0e3e5",
+                      "on-secondary-fixed": "#001a42",
+                      "on-primary-fixed": "#191c22",
+                      "secondary-container": "#0566d9",
+                      "on-primary": "#2e3037",
+                      "background": "#101415",
+                      "on-error-container": "#ffdad6",
+                      "surface-container": "#1d2022",
+                      "tertiary-fixed": "#ebdcff",
+                      "on-secondary-container": "#e6ecff",
+                      "surface-dim": "#101415",
+                      "secondary-fixed": "#d8e2ff",
+                      "on-surface": "#e0e3e5",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "surface-tint": "#c4c6cf",
+                      "outline": "#909095",
+                      "on-error": "#690005",
+                      "surface-variant": "#323537",
+                      "surface-container-high": "#272a2c",
+                      "on-secondary": "#002e6a",
+                      "surface-bright": "#363a3b",
+                      "on-surface-variant": "#c6c6cb",
+                      "on-secondary-fixed-variant": "#004395",
+                      "on-tertiary-fixed": "#260059",
+                      "secondary": "#adc6ff",
+                      "tertiary-fixed-dim": "#d3bbff",
+                      "error": "#ffb4ab",
+                      "on-tertiary-container": "#8d64d9",
+                      "primary-fixed-dim": "#c4c6cf",
+                      "outline-variant": "#45474b",
+                      "surface-container-highest": "#323537",
+                      "on-primary-container": "#797b83",
+                      "surface-container-low": "#191c1e",
+                      "on-background": "#e0e3e5",
+                      "tertiary-container": "#150037",
+                      "inverse-on-surface": "#2d3133"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "safe-area": "32px",
+                      "nebula-padding": "64px",
+                      "mosaic-gap": "4px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "display-lg-mobile": ["Inter"],
+                      "label-sm": ["Inter"]
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        .mix-blend-nebula { mix-blend-mode: hard-light; }
+        
+        @keyframes stellarPop {
+            0% { transform: scale(0.9); opacity: 0; filter: brightness(2) contrast(1.5); box-shadow: 0 0 0 rgba(211,187,255,0); }
+            40% { transform: scale(1.02); opacity: 1; filter: brightness(1.2) contrast(1.1); box-shadow: 0 0 30px rgba(211,187,255,0.6); }
+            100% { transform: scale(1); opacity: 0.85; filter: brightness(1) contrast(1); box-shadow: 0 0 10px rgba(211,187,255,0); }
+        }
+
+        .animate-stellar-pop {
+            animation: stellarPop 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation-delay: 0.1s;
+        }
+        
+        @keyframes outlinePulse {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(211,187,255,0.4)); opacity: 0.7; }
+            50% { filter: drop-shadow(0 0 15px rgba(211,187,255,0.8)); opacity: 1; }
+        }
+        .outline-glow {
+            animation: outlinePulse 4s ease-in-out infinite;
+        }
+
+        /* Transition for photo swaps */
+        .photo-layer {
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface h-screen w-screen overflow-hidden relative font-body-lg antialiased">
+    <!-- Deep Space Nebula Background -->
+    <div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-60 mix-blend-screen z-0" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCoVVVq_G4SSlDzUzY35TFxMHl4SrldmN1Mcw8SAlWHrYScAOw0VD8bTbs5Dyym7DuFsUfTk3eD_D7TsHUYyPYNc_nJto7JwtnzthoyqvJGBrVmW2AXE0h_SEBOrPgUhELaXHuLmkIPx39Oit5TZQHoXJD9jElEx70hNRn2mm_i5iV-x1jmkKWXkFP3ds2TW1WqcQxtVJY7eHpeZakllINGxCfWwZxrn2teEsuOmGgTNHk_8JKc1d62zR90zKTTOpWsFHuBfK8KOPB')"></div>
+    <!-- Additional dark gradient to ensure high contrast for the grid -->
+    <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/80 to-transparent z-0"></div>
+    
+    <!-- Main Exhibition Canvas -->
+    <div class="relative z-10 w-full h-full p-nebula-padding flex items-center justify-center">
+        <!-- Grid Container -->
+        <div class="w-full h-full relative" id="mosaic-container">
+            <!-- Dynamic Slots will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        const container = document.getElementById('mosaic-container');
+
+        // Fetch initial state
+        fetch('/api/slots')
+            .then(res => res.json())
+            .then(data => {
+                data.slots.forEach(slot => {
+                    const el = createSlotElement(slot);
+                    container.appendChild(el);
+                });
+            })
+            .catch(console.error);
+
+        function createSlotElement(slot) {
+            const div = document.createElement('div');
+            div.id = `slot-${slot.id}`;
+            // Use absolute positioning with percentages to match config.js
+            div.className = 'absolute rounded-lg overflow-hidden group';
+            
+            // Convert to percentage and add a tiny gap by slightly reducing width/height (to simulate mosaic-gap)
+            // or just rely on the absolute coordinates. config.js w/h are exact fractions, so we'll subtract 4px from w/h for gap using calc()
+            div.style.left = `calc(${slot.x * 100}% + 2px)`;
+            div.style.top = `calc(${slot.y * 100}% + 2px)`;
+            div.style.width = `calc(${slot.w * 100}% - 4px)`;
+            div.style.height = `calc(${slot.h * 100}% - 4px)`;
+
+            if (!slot.active) {
+                // Inactive slots are completely invisible
+                return div;
+            }
+
+            // Active slots remain invisible until filled (no borders or background)
+            // div.classList.add('border', 'border-tertiary/20', 'shadow-[0_0_15px_rgba(211,187,255,0.1)]');
+            
+            // Inner photo container
+            const photoDiv = document.createElement('div');
+            photoDiv.id = `photo-${slot.id}`;
+            // CSS 블렌딩 제거! 서버에서 이미 합성된 사진을 그대로 렌더링합니다.
+            photoDiv.className = 'absolute inset-0 bg-cover bg-center transition-all duration-700';
+            
+            if (slot.filled && slot.imagePath) {
+                photoDiv.style.backgroundImage = `url(${slot.imagePath})`;
+            }
+            div.appendChild(photoDiv);
+
+            // New Discovery chip (hidden by default)
+            const chip = document.createElement('div');
+            chip.id = `chip-${slot.id}`;
+            chip.className = 'absolute top-2 right-2 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full animate-pulse shadow-lg backdrop-blur-md border border-secondary/30 hidden z-30';
+            chip.innerText = 'New';
+            div.appendChild(chip);
+
+            return div;
+        }
+
+        // Handle real-time photo uploads
+        socket.on('new_photo', (data) => {
+            const slotEl = document.getElementById(`slot-${data.slotId}`);
+            const photoDiv = document.getElementById(`photo-${data.slotId}`);
+            const chip = document.getElementById(`chip-${data.slotId}`);
+            
+            if (slotEl && photoDiv) {
+                // Apply stellar pop animation to the whole slot
+                slotEl.classList.remove('animate-stellar-pop');
+                // Force reflow
+                void slotEl.offsetWidth; 
+                
+                // Set new image
+                photoDiv.style.backgroundImage = `url(${data.imagePath})`;
+                
+                // Trigger animation
+                slotEl.classList.add('animate-stellar-pop', 'z-30', 'border-secondary/40');
+                
+                // Show 'New' chip
+                if(chip) {
+                    chip.classList.remove('hidden');
+                    // Hide chip after a few seconds
+                    setTimeout(() => {
+                        chip.classList.add('hidden');
+                        slotEl.classList.remove('z-30', 'border-secondary/40');
+                    }, 5000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

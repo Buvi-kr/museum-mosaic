@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="dark" lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>포천아트밸리 천문과학관 - Upload</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#572ba0",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0b0f10",
+                        "primary-container": "#0b0e14",
+                        "inverse-primary": "#5c5e66",
+                        "tertiary": "#d3bbff",
+                        "primary-fixed": "#e1e2eb",
+                        "on-primary-fixed-variant": "#44474e",
+                        "on-tertiary": "#3f0689",
+                        "primary": "#c4c6cf",
+                        "surface": "#101415",
+                        "inverse-surface": "#e0e3e5",
+                        "on-secondary-fixed": "#001a42",
+                        "on-primary-fixed": "#191c22",
+                        "secondary-container": "#0566d9",
+                        "on-primary": "#2e3037",
+                        "background": "#101415",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#1d2022",
+                        "tertiary-fixed": "#ebdcff",
+                        "on-secondary-container": "#e6ecff",
+                        "surface-dim": "#101415",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-surface": "#e0e3e5",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "surface-tint": "#c4c6cf",
+                        "outline": "#909095",
+                        "on-error": "#690005",
+                        "surface-variant": "#323537",
+                        "surface-container-high": "#272a2c",
+                        "on-secondary": "#002e6a",
+                        "surface-bright": "#363a3b",
+                        "on-surface-variant": "#c6c6cb",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-tertiary-fixed": "#260059",
+                        "secondary": "#adc6ff",
+                        "tertiary-fixed-dim": "#d3bbff",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#8d64d9",
+                        "primary-fixed-dim": "#c4c6cf",
+                        "outline-variant": "#45474b",
+                        "surface-container-highest": "#323537",
+                        "on-primary-container": "#797b83",
+                        "surface-container-low": "#191c1e",
+                        "on-background": "#e0e3e5",
+                        "tertiary-container": "#150037",
+                        "inverse-on-surface": "#2d3133"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "safe-area": "32px",
+                        "nebula-padding": "64px",
+                        "mosaic-gap": "4px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(211, 187, 255, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(196, 198, 207, 0.08), transparent 25%);
+            background-attachment: fixed;
+            min-height: max(884px, 100dvh);
+        }
+        .glass-card {
+            background: rgba(11, 14, 20, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(173, 198, 255, 0.2);
+        }
+        .glow-interact {
+            box-shadow: 0 0 15px rgba(211, 187, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        .glow-interact:active {
+            box-shadow: 0 0 25px rgba(211, 187, 255, 0.7);
+            transform: scale(0.98);
+        }
+        #state-uploading, #state-success { display: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-4 md:px-nebula-padding h-20 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/20 shadow-none text-primary">
+        <div class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary tracking-tighter truncate">
+            포천아트밸리 천문과학관
+        </div>
+    </header>
+
+    <!-- Main Canvas -->
+    <main class="w-full max-w-md mt-24 mb-32 flex flex-col gap-8 relative z-10">
+        <!-- Initial Upload State -->
+        <section class="flex flex-col items-center gap-8 w-full animate-[fadeIn_0.5s_ease-in-out]" id="state-initial">
+            <div class="text-center space-y-2">
+                <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">나만의 별 만들기</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant">사진을 촬영하거나 선택하여 우주 갤러리에 추가하세요.</p>
+            </div>
+            
+            <button class="w-full aspect-square max-w-[280px] glass-card glow-interact rounded-[2rem] flex flex-col items-center justify-center gap-6 group relative overflow-hidden" onclick="document.getElementById('hidden-file-input').click()">
+                <div class="absolute inset-0 bg-gradient-to-tr from-tertiary-container/30 to-transparent opacity-0 group-active:opacity-100 transition-opacity duration-300"></div>
+                <span class="material-symbols-outlined text-[80px] text-tertiary group-active:scale-90 transition-transform duration-300" style="font-variation-settings: 'FILL' 1;">
+                    photo_camera
+                </span>
+                <span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface-variant group-active:text-tertiary transition-colors duration-300">
+                    사진 찍기 / 선택
+                </span>
+            </button>
+            <input accept="image/*" class="hidden" id="hidden-file-input" type="file" onchange="handleFileSelect(event)"/>
+        </section>
+
+        <!-- Uploading State -->
+        <section class="flex flex-col items-center gap-12 w-full" id="state-uploading">
+            <div class="text-center space-y-4 w-full">
+                <span class="material-symbols-outlined text-6xl text-secondary animate-pulse" style="font-variation-settings: 'FILL' 1;">
+                    cloud_upload
+                </span>
+                <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">우주로 전송 중...</h2>
+            </div>
+            <div class="w-full glass-card rounded-full h-4 overflow-hidden relative">
+                <div class="absolute top-0 left-0 h-full bg-secondary w-0 transition-all duration-300 ease-out" id="progress-fill">
+                    <div class="absolute inset-0 bg-white/30 animate-[shimmer_1s_infinite_linear] bg-[length:200%_100%] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                </div>
+            </div>
+            <p class="font-body-md text-body-md text-secondary" id="progress-text">0%</p>
+        </section>
+
+        <!-- Success State -->
+        <section class="flex flex-col items-center gap-8 w-full text-center" id="state-success">
+            <div class="w-32 h-32 rounded-full glass-card flex items-center justify-center glow-interact border-tertiary/50 bg-tertiary-container/20">
+                <span class="material-symbols-outlined text-6xl text-tertiary" style="font-variation-settings: 'FILL' 1;">
+                    check_circle
+                </span>
+            </div>
+            <div class="space-y-4">
+                <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary">성공!</h2>
+                <p class="font-body-lg text-body-lg text-on-surface">대형 화면에서 당신의 사진을 찾아보세요.</p>
+            </div>
+            <div class="w-full max-w-[200px] aspect-video glass-card rounded-lg p-unit flex gap-mosaic-gap opacity-80 mt-4 overflow-hidden relative">
+                <!-- Decorative mini mosaic representation -->
+                <div class="flex-1 bg-surface-variant/50 rounded-sm"></div>
+                <div class="flex-1 bg-tertiary/30 rounded-sm animate-pulse" id="success-thumb-container" style="background-size: cover; background-position: center;"></div>
+                <div class="flex-1 bg-surface-variant/50 rounded-sm"></div>
+            </div>
+            <button class="mt-8 px-8 py-4 bg-tertiary-container text-on-tertiary-container rounded-full font-body-lg text-body-lg font-bold glow-interact flex items-center gap-2" onclick="resetFlow()">
+                <span class="material-symbols-outlined">replay</span>
+                다시 참여하기
+            </button>
+        </section>
+    </main>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-20 bg-surface-container/60 backdrop-blur-lg rounded-t-xl border-t border-outline-variant/20 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] md:hidden">
+        <a class="flex flex-col items-center justify-center bg-tertiary-container text-on-tertiary-container rounded-full px-6 py-1 active:scale-110 transition-transform duration-200" href="#">
+            <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+            <span class="font-label-sm text-label-sm mt-1">Capture</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 active:scale-110 transition-transform duration-200" href="#">
+            <span class="material-symbols-outlined text-[24px]">stars</span>
+            <span class="font-label-sm text-label-sm mt-1">My Stars</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 active:scale-110 transition-transform duration-200" href="#">
+            <span class="material-symbols-outlined text-[24px]">info</span>
+            <span class="font-label-sm text-label-sm mt-1">Info</span>
+        </a>
+    </nav>
+
+    <script>
+        async function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('state-initial').style.display = 'none';
+            document.getElementById('state-uploading').style.display = 'flex';
+            
+            let progress = 0;
+            const fill = document.getElementById('progress-fill');
+            const text = document.getElementById('progress-text');
+            
+            // 시각적 피드백을 위한 가짜 프로그레스 바 (최대 90%까지)
+            const interval = setInterval(() => {
+                if(progress < 90) {
+                    progress += Math.floor(Math.random() * 15) + 5;
+                    if(progress > 90) progress = 90;
+                    fill.style.width = `${progress}%`;
+                    text.innerText = `${progress}%`;
+                }
+            }, 300);
+
+            try {
+                const formData = new FormData();
+                formData.append('photo', file);
+
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                clearInterval(interval);
+                
+                if (data.ok) {
+                    fill.style.width = `100%`;
+                    text.innerText = `100%`;
+                    
+                    setTimeout(() => {
+                        document.getElementById('state-uploading').style.display = 'none';
+                        document.getElementById('state-success').style.display = 'flex';
+                        // 작은 모자이크 장식 요소에 실제 업로드 된 사진을 깔아줌
+                        document.getElementById('success-thumb-container').style.backgroundImage = `url(${data.imagePath})`;
+                    }, 500);
+                } else {
+                    alert('업로드 실패: ' + (data.message || '알 수 없는 오류'));
+                    resetFlow();
+                }
+            } catch (error) {
+                console.error(error);
+                clearInterval(interval);
+                alert('업로드 중 네트워크 오류가 발생했습니다.');
+                resetFlow();
+            }
+        }
+
+        function resetFlow() {
+            document.getElementById('hidden-file-input').value = '';
+            document.getElementById('state-success').style.display = 'none';
+            document.getElementById('state-uploading').style.display = 'none';
+            document.getElementById('progress-fill').style.width = '0%';
+            document.getElementById('progress-text').innerText = '0%';
+            document.getElementById('success-thumb-container').style.backgroundImage = 'none';
+            document.getElementById('state-initial').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
