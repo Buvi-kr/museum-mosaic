@@ -197,28 +197,35 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
     const thumbFilename = `thumb_${req.file.filename}`;
     const thumbPath     = path.join(UPLOAD_DIR, thumbFilename);
 
-    // 해당 슬롯의 조각 이미지 경로
-    const slicePath = path.join(PUBLIC_DIR, 'slices', `slice_${slot.id}.jpg`);
-    
-    // 조각 이미지 메타데이터 읽기 (정확한 사이즈 픽셀)
-    const sliceMeta = await sharp(slicePath).metadata();
+    try {
+      // 해당 슬롯의 조각 이미지 경로
+      const slicePath = path.join(PUBLIC_DIR, 'slices', `slice_${slot.id}.jpg`);
+      
+      // 조각 이미지 메타데이터 읽기 (정확한 사이즈 픽셀)
+      const sliceMeta = await sharp(slicePath).metadata();
 
-    // 1. 사용자 사진을 조각 크기에 꽉 차게(cover) 리사이징 후 버퍼로 변환
-    const userPhotoBuffer = await sharp(originalPath)
-      .resize(sliceMeta.width, sliceMeta.height, { fit: 'cover' })
-      .toBuffer();
+      // 1. 사용자 사진을 조각 크기에 꽉 차게(cover) 리사이징 후 버퍼로 변환
+      const userPhotoBuffer = await sharp(originalPath)
+        .resize(sliceMeta.width, sliceMeta.height, { fit: 'cover' })
+        .toBuffer();
 
-    // 2. 조각 이미지(별자리 배경)를 사용자 사진 위에 덮어씌워 합성 (overlay / hard-light 등)
-    // config.js 의 blend.mode 활용
-    const blendMode = CONFIG.blend.mode || 'overlay';
-    
-    await sharp(userPhotoBuffer)
-      .composite([{ input: slicePath, blend: blendMode }])
-      .jpeg({ quality: 90 })
-      .toFile(thumbPath);
+      // 2. 우주선 배경 조각을 밑바탕(Base)으로 깔고, 사용자 사진을 그 위에 얹어 합성
+      // soft-light를 적용하면 우주선의 형태가 강하게 유지되면서 사용자 사진이 은은하게 녹아듭니다.
+      const blendMode = CONFIG.blend.mode === 'overlay' ? 'soft-light' : (CONFIG.blend.mode || 'soft-light');
+      
+      await sharp(slicePath)
+        .composite([{ input: userPhotoBuffer, blend: blendMode }])
+        .jpeg({ quality: 90 })
+        .toFile(thumbPath);
 
-    // 원본 삭제 (합성된 최종 썸네일만 보관)
-    fs.rmSync(originalPath, { force: true });
+      // 원본 삭제 (합성된 최종 썸네일만 보관)
+      try { fs.rmSync(originalPath, { force: true }); } catch (e) {}
+    } catch (imgError) {
+      console.error('[IMAGE ERROR] 업로드된 이미지 처리 실패:', imgError);
+      // 깨진 파일이거나 지원하지 않는 파일(HEIC 등)일 경우 에러 응답
+      try { fs.rmSync(originalPath, { force: true }); } catch (e) {}
+      return res.status(400).json({ ok: false, message: '지원하지 않는 이미지 형식이거나 파일이 손상되었습니다. (JPG/PNG 등을 사용해주세요)' });
+    }
 
     // DB 업데이트
     const webPath = `/uploads/${thumbFilename}`;

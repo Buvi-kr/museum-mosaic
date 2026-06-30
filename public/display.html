@@ -169,13 +169,12 @@
             div.style.height = `calc(${slot.h * 100}% - 4px)`;
 
             if (!slot.active) {
-                // Inactive slots just show a faint blurred glass effect
-                div.classList.add('bg-surface-container/5', 'border', 'border-outline-variant/10', 'backdrop-blur-sm');
+                // Inactive slots are completely invisible
                 return div;
             }
 
-            // Active slots have styles
-            div.classList.add('border', 'border-tertiary/20', 'shadow-[0_0_15px_rgba(211,187,255,0.1)]');
+            // Active slots remain invisible until filled (no borders or background)
+            // div.classList.add('border', 'border-tertiary/20', 'shadow-[0_0_15px_rgba(211,187,255,0.1)]');
             
             // Inner photo container
             const photoDiv = document.createElement('div');
