@@ -6,5 +6,9 @@
     "autoResetDelayMs": 60000,
     "blendMode": "overlay",
     "blendAlpha": 0.7
-  }
+  },
+  "activeBg": "bg_default.jpg",
+  "activeBgName": "bg_minecraft_earth.jpg",
+  "bgName": "bg_minecraft_earth.jpg",
+  "bg": "bg_minecraft_earth.jpg"
 }

@@ -36,7 +36,7 @@ function loadConfig() {
       height: 1080,
     },
     assets: {
-      bg: userConfig.backgroundUrl,
+      bg: userConfig.activeBg || userConfig.backgroundUrl || 'bg_default.jpg',
     },
     blend: {
       mode: userConfig.tuning.blendMode,
@@ -44,6 +44,7 @@ function loadConfig() {
     },
     tuning: userConfig.tuning,
     activeTemplate: userConfig.activeTemplate,
+    activeBg: userConfig.activeBg || userConfig.backgroundUrl || 'bg_default.jpg',
     grid: gridTemplates[userConfig.activeTemplate] || gridTemplates['12-slot']
   };
 }

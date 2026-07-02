@@ -19,6 +19,7 @@ let CONFIG = configLoader.loadConfig();
 const PUBLIC_DIR  = path.join(__dirname, '../public');
 const UPLOAD_DIR  = path.join(PUBLIC_DIR, 'uploads');
 const BACKUP_DIR  = path.join(PUBLIC_DIR, 'uploads', 'backup');
+const RAW_DIR     = path.join(PUBLIC_DIR, 'uploads', 'raw');
 const DB_PATH     = path.join(__dirname, '../database.json');
 const SLICES_DIR  = path.join(PUBLIC_DIR, 'slices');
 const BG_DIR      = path.join(PUBLIC_DIR, 'backgrounds');
@@ -26,7 +27,7 @@ const HISTORY_DIR = path.join(__dirname, '../history');
 const HISTORY_BG_DIR = path.join(HISTORY_DIR, 'backgrounds');
 const HISTORY_SLICES_DIR = path.join(HISTORY_DIR, 'slices');
 
-[UPLOAD_DIR, BACKUP_DIR, SLICES_DIR, BG_DIR, HISTORY_DIR, HISTORY_BG_DIR, HISTORY_SLICES_DIR].forEach(d => fs.mkdirSync(d, { recursive: true }));
+[UPLOAD_DIR, BACKUP_DIR, RAW_DIR, SLICES_DIR, BG_DIR, HISTORY_DIR, HISTORY_BG_DIR, HISTORY_SLICES_DIR].forEach(d => fs.mkdirSync(d, { recursive: true }));
 
 // ─── 콘솔 로깅 및 파일 백업 ──────────────────────────────────
 const LOG_FILE_PATH = path.join(__dirname, '../history/server.log');
@@ -257,8 +258,42 @@ app.post('/api/admin/config', async (req, res) => {
         }
       }
 
-      initDB(); // 새 환경에 맞춰 DB 완전 초기화
-      message += ' (화면 초기화 및 배경 히스토리 정리 완료)';
+      if (oldTemplate !== CONFIG.activeTemplate) {
+        initDB(); // 템플릿 변경 시에만 슬롯 초기화
+        message += ' (템플릿 변경으로 인한 화면 리셋 완료)';
+      } else if (oldBg !== CONFIG.activeBg) {
+        // 배경만 변경된 경우, 기존 원본 사진(raw)들을 불러와 새 배경으로 즉시 재합성(Re-compositing)
+        console.log('[SYSTEM] 배경 교체 감지. 기존 사진들의 재합성을 시작합니다...');
+        const dbPath = path.join(__dirname, '../database.json');
+        let db = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+        const newBgBase = CONFIG.activeBg.replace(/\.(jpg|png)$/, '');
+        const blendMode = CONFIG.blend && CONFIG.blend.mode === 'overlay' ? 'soft-light' : (CONFIG.blend ? CONFIG.blend.mode : 'soft-light');
+        
+        for (const slot of db.slots) {
+          if (slot.filled && slot.rawPath) {
+            const originalPath = path.join(PUBLIC_DIR, slot.rawPath.replace('/uploads/', 'uploads/'));
+            const slicePath = path.join(SLICES_DIR, newBgBase, CONFIG.activeTemplate, `slice_${slot.id}.jpg`);
+            const thumbPath = path.join(PUBLIC_DIR, slot.imagePath.replace('/uploads/', 'uploads/'));
+            
+            if (fs.existsSync(originalPath) && fs.existsSync(slicePath)) {
+              try {
+                const sliceMeta = await sharp(slicePath).metadata();
+                const userPhotoBuffer = await sharp(originalPath)
+                  .resize(sliceMeta.width, sliceMeta.height, { fit: 'cover' })
+                  .toBuffer();
+                  
+                await sharp(slicePath)
+                  .composite([{ input: userPhotoBuffer, blend: blendMode }])
+                  .jpeg({ quality: 90 })
+                  .toFile(thumbPath);
+              } catch (e) {
+                console.error(`[ADMIN] 슬롯 ${slot.id} 재합성 실패:`, e);
+              }
+            }
+          }
+        }
+        message += ' (배경 스왑 및 기존 사진 재합성 완료)';
+      }
     }
 
     io.emit('config_updated'); // 프론트엔드 전체 새로고침 유도
@@ -407,6 +442,8 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
 
       const thumbFilename = `thumb_${req.file.filename}`;
       const thumbPath     = path.join(UPLOAD_DIR, thumbFilename);
+      const rawFilename   = `raw_${req.file.filename}`;
+      const rawPath       = path.join(RAW_DIR, rawFilename);
 
       const blendMode = CONFIG.blend && CONFIG.blend.mode === 'overlay' ? 'soft-light' : (CONFIG.blend ? CONFIG.blend.mode : 'soft-light');
       
@@ -415,11 +452,13 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
         .jpeg({ quality: 90 })
         .toFile(thumbPath);
 
-      try { fs.rmSync(originalPath, { force: true }); } catch (e) {}
+      // 원본을 지우지 않고 재합성을 위해 raw 폴더에 보존
+      fs.renameSync(originalPath, rawPath);
 
       // 4. DB 업데이트
       slot.filled = true;
       slot.imagePath = `/uploads/${thumbFilename}`;
+      slot.rawPath = `/uploads/raw/${rawFilename}`;
       slot.timestamp = new Date().toISOString();
       saveDB(db);
 

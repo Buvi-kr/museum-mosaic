@@ -160,7 +160,7 @@
                 slotsData.slots.forEach(filledSlot => {
                     const photoDiv = document.getElementById(`photo-${filledSlot.id}`);
                     if (photoDiv && filledSlot.imagePath) {
-                        photoDiv.style.backgroundImage = `url(${filledSlot.imagePath})`;
+                        photoDiv.style.backgroundImage = `url(${filledSlot.imagePath}?t=${Date.now()})`;
                     }
                 });
 

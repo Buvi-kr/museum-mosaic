@@ -21,5 +21,14 @@ uploads/
 Thumbs.db
 
 # Project specific unused/history
-# history/
+history/completions/
+history/backgrounds/
+history/slices/
 .env
+
+# Dynamic Data & Cache
+database.json
+public/slices/
+public/backgrounds/bg_*.jpg
+public/backgrounds/bg_*.png
+
