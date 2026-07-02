@@ -1,0 +1,10 @@
+{
+  "activeTemplate": "6-slot",
+  "backgroundUrl": "bg.jpg",
+  "tuning": {
+    "partialResetKeepCount": 3,
+    "autoResetDelayMs": 60000,
+    "blendMode": "overlay",
+    "blendAlpha": 0.7
+  }
+}

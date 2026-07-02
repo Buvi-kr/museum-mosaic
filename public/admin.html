@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모자이크 관리자 대시보드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+    </style>
+</head>
+<body class="min-h-screen text-gray-800 p-8">
+    
+    <div class="max-w-4xl mx-auto space-y-8">
+        
+        <header class="flex items-center justify-between border-b pb-4 border-gray-300">
+            <div>
+                <h1 class="text-3xl font-bold flex items-center gap-3">
+                    <span class="material-symbols-outlined text-4xl text-indigo-600">admin_panel_settings</span>
+                    모자이크 시스템 관리자 (V5)
+                </h1>
+                <p class="text-gray-500 mt-2">현장에서 모자이크 레이아웃과 배경을 실시간으로 통제합니다.</p>
+            </div>
+            <a href="/display.html" target="_blank" class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition font-medium flex items-center gap-2">
+                <span class="material-symbols-outlined">desktop_windows</span>
+                디스플레이 확인
+            </a>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- 왼쪽 패널: 템플릿 및 설정 변경 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 space-y-6">
+                <h2 class="text-xl font-bold border-b pb-2 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-indigo-500">grid_view</span>
+                    그리드 & 동작 설정
+                </h2>
+
+                <form id="config-form" class="space-y-4">
+                    <!-- 템플릿 선택 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">모자이크 슬롯 템플릿</label>
+                        <select id="activeTemplate" class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-200">
+                            <option value="6-slot">6칸 (가로 3 x 세로 2) - 초고속 회전율 (큼직한 사진)</option>
+                            <option value="12-slot">12칸 (가로 4 x 세로 3) - 빠른 회전율</option>
+                            <option value="20-slot">20칸 (가로 5 x 세로 4) - 적당한 밀도</option>
+                            <option value="28-slot">28칸 (가로 7 x 세로 4) - 대규모 군중용 (작은 사진)</option>
+                        </select>
+                    </div>
+
+                    <!-- 배경 선택 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">디스플레이 무대 배경 (Multi-BG)</label>
+                        <select id="activeBg" class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-200">
+                            <!-- JS로 동적 생성 -->
+                        </select>
+                        <p class="text-xs text-pink-500 mt-1 font-semibold">템플릿이나 배경 변경 시 전시 화면이 즉시 리셋됩니다.</p>
+                    </div>
+
+                    <!-- 유지할 칸 수 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">부분 리셋 시 유지할 사진 수</label>
+                        <input type="number" id="keepCount" min="0" max="28" class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-200" />
+                        <p class="text-xs text-gray-500 mt-1">완성 시 몇 장을 남기고 지울지 결정합니다. (0 = 전체 삭제)</p>
+                    </div>
+
+                    <!-- 리셋 대기 시간 -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">모자이크 완성 후 리셋 대기 시간 (초)</label>
+                        <input type="number" id="delaySeconds" min="1" max="60" class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-200" />
+                        <p class="text-xs text-gray-500 mt-1">완성 후 팝업 축하 이펙트가 유지되는 시간입니다.</p>
+                    </div>
+
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-md flex justify-center items-center gap-2">
+                        <span class="material-symbols-outlined">save</span>
+                        설정 저장 및 적용
+                    </button>
+                </form>
+            </div>
+
+            <!-- 오른쪽 패널: 배경 사진 변경 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 space-y-6">
+                <h2 class="text-xl font-bold border-b pb-2 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-pink-500">wallpaper</span>
+                    배경 사진 교체 (자동 재단)
+                </h2>
+
+                <div class="space-y-4">
+                    <div class="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-6 text-center">
+                        <p class="text-sm text-gray-600 mb-4">현재 배경 사진</p>
+                        <img id="current-bg-preview" src="/bg.jpg" class="w-full h-auto rounded-lg shadow-sm border border-gray-200" alt="현재 배경" onerror="this.src=''" />
+                    </div>
+
+                    <form id="bg-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">새로운 다중 배경(Multi-BG) 업로드</label>
+                            <input type="file" id="bg-input" accept="image/*" class="w-full border border-gray-300 rounded-lg p-2 text-sm" required />
+                            <p class="text-xs text-gray-500 mt-1">업로드 시 새로운 이름(bg_시간.jpg)으로 저장되며, 즉시 6/12/20/28칸 조각(Pre-Slicing)을 미리 만들어 둡니다.</p>
+                        </div>
+                        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-xl transition shadow-md flex justify-center items-center gap-2">
+                            <span class="material-symbols-outlined">upload</span>
+                            배경 업로드 및 사전 렌더링(Pre-Slicing) 실행
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 로딩 오버레이 -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex-col items-center justify-center text-white">
+        <span class="material-symbols-outlined text-6xl animate-spin">refresh</span>
+        <h2 class="text-2xl font-bold mt-4" id="loading-text">처리 중...</h2>
+        <p class="text-gray-300 mt-2">서버에서 배경 이미지를 1920x1080으로 조각내고 있습니다.</p>
+    </div>
+
+    <script>
+        // 설정 불러오기
+        async function loadConfig() {
+            try {
+                // 1. 배경 목록 불러오기
+                const bgRes = await fetch('/api/admin/backgrounds');
+                const bgData = await bgRes.json();
+                
+                const bgSelect = document.getElementById('activeBg');
+                bgSelect.innerHTML = '';
+                bgData.backgrounds.forEach(bg => {
+                    const option = document.createElement('option');
+                    option.value = bg;
+                    option.textContent = bg;
+                    bgSelect.appendChild(option);
+                });
+
+                // 2. 현재 설정 불러오기
+                const res = await fetch('/api/admin/config');
+                const data = await res.json();
+                
+                document.getElementById('activeTemplate').value = data.activeTemplate;
+                document.getElementById('activeBg').value = data.activeBg || 'bg_default.jpg';
+                document.getElementById('keepCount').value = data.tuning.partialResetKeepCount;
+                document.getElementById('delaySeconds').value = data.tuning.autoResetDelayMs / 1000;
+                
+                // 미리보기 이미지 업데이트
+                document.getElementById('current-bg-preview').src = `/backgrounds/${data.activeBg || 'bg_default.jpg'}?t=${Date.now()}`;
+            } catch (err) {
+                console.error('설정 로드 실패:', err);
+                alert('설정을 불러오는데 실패했습니다.');
+            }
+        }
+
+        // 템플릿 콤보박스나 배경 콤보박스 선택 시 미리보기 즉각 변경
+        document.getElementById('activeBg').addEventListener('change', (e) => {
+            document.getElementById('current-bg-preview').src = `/backgrounds/${e.target.value}?t=${Date.now()}`;
+        });
+
+        // 설정 폼 제출
+        document.getElementById('config-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const payload = {
+                activeTemplate: document.getElementById('activeTemplate').value,
+                activeBg: document.getElementById('activeBg').value,
+                tuning: {
+                    partialResetKeepCount: parseInt(document.getElementById('keepCount').value, 10),
+                    autoResetDelayMs: parseInt(document.getElementById('delaySeconds').value, 10) * 1000,
+                    blendMode: 'overlay',
+                    blendAlpha: 0.7
+                }
+            };
+
+            showLoading('설정을 저장하고 조각을 다시 맞추고 있습니다...');
+            try {
+                const res = await fetch('/api/admin/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                hideLoading();
+                
+                if (data.ok) {
+                    alert(data.message);
+                    fetchConfig();
+                } else {
+                    alert('저장 실패: ' + data.message);
+                }
+            } catch (err) {
+                hideLoading();
+                alert('네트워크 오류');
+            }
+        });
+
+        // 배경 업로드 폼 제출
+        document.getElementById('bg-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = document.getElementById('bg-input').files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('bg', file);
+
+            showLoading('이미지를 업로드하고 고해상도로 자르고 있습니다. 잠시만 기다려주세요...');
+            try {
+                const res = await fetch('/api/admin/upload-bg', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                hideLoading();
+                
+                if (data.ok) {
+                    alert(data.message);
+                    document.getElementById('bg-input').value = '';
+                    
+                    // 새 배경 업로드 후 다시 목록 불러오기 & 업로드된 배경 선택
+                    await loadConfig();
+                    document.getElementById('activeBg').value = data.bgName;
+                } else {
+                    alert('업로드 실패: ' + data.message);
+                }
+            } catch (err) {
+                hideLoading();
+                alert('네트워크 오류');
+            }
+        });
+
+        function showLoading(text) {
+            document.getElementById('loading-text').innerText = text;
+            document.getElementById('loading-overlay').classList.replace('hidden', 'flex');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.replace('flex', 'hidden');
+        }
+
+        // 초기화
+        loadConfig();
+    </script>
+</body>
+</html>

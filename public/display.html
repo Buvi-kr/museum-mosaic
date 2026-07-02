@@ -121,14 +121,14 @@
 </head>
 <body class="bg-surface-container-lowest text-on-surface h-screen w-screen overflow-hidden relative font-body-lg antialiased">
     <!-- Deep Space Nebula Background -->
-    <div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-60 mix-blend-screen z-0" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCoVVVq_G4SSlDzUzY35TFxMHl4SrldmN1Mcw8SAlWHrYScAOw0VD8bTbs5Dyym7DuFsUfTk3eD_D7TsHUYyPYNc_nJto7JwtnzthoyqvJGBrVmW2AXE0h_SEBOrPgUhELaXHuLmkIPx39Oit5TZQHoXJD9jElEx70hNRn2mm_i5iV-x1jmkKWXkFP3ds2TW1WqcQxtVJY7eHpeZakllINGxCfWwZxrn2teEsuOmGgTNHk_8JKc1d62zR90zKTTOpWsFHuBfK8KOPB')"></div>
+    <div id="bg-layer" class="absolute inset-0 bg-cover bg-center w-full h-full opacity-60 mix-blend-screen z-0"></div>
     <!-- Additional dark gradient to ensure high contrast for the grid -->
     <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/80 to-transparent z-0"></div>
     
     <!-- Main Exhibition Canvas -->
     <div class="relative z-10 w-full h-full p-nebula-padding flex items-center justify-center">
-        <!-- Grid Container -->
-        <div class="w-full h-full relative" id="mosaic-container">
+        <!-- Grid Container: 16:9 비율 절대 유지 -->
+        <div class="relative w-full" id="mosaic-container" style="aspect-ratio: 16 / 9; max-height: 100%;">
             <!-- Dynamic Slots will be injected here -->
         </div>
     </div>
@@ -136,51 +136,62 @@
     <script>
         const socket = io();
         const container = document.getElementById('mosaic-container');
+        let currentGrid = [];
+        let totalSlots = 12;
 
-        // Fetch initial state
-        fetch('/api/slots')
-            .then(res => res.json())
-            .then(data => {
-                data.slots.forEach(slot => {
+        // Fetch Grid Layout and Slots State
+        async function initializeDisplay() {
+            try {
+                const gridRes = await fetch('/api/grid');
+                const gridData = await gridRes.json();
+                currentGrid = gridData.grid;
+                totalSlots = currentGrid.length;
+
+                // Create slots
+                currentGrid.forEach(slot => {
                     const el = createSlotElement(slot);
                     container.appendChild(el);
                 });
-            })
-            .catch(console.error);
+
+                // Fetch filled status
+                const slotsRes = await fetch('/api/slots');
+                const slotsData = await slotsRes.json();
+                
+                slotsData.slots.forEach(filledSlot => {
+                    const photoDiv = document.getElementById(`photo-${filledSlot.id}`);
+                    if (photoDiv && filledSlot.imagePath) {
+                        photoDiv.style.backgroundImage = `url(${filledSlot.imagePath})`;
+                    }
+                });
+
+                // Update background image cache busting (just in case admin changed it)
+                const bgLayer = document.getElementById('bg-layer');
+                if(bgLayer) {
+                    bgLayer.style.backgroundImage = `url('/backgrounds/${gridData.activeBg || 'bg_default.jpg'}?t=${Date.now()}')`;
+                }
+
+            } catch (err) {
+                console.error('초기화 에러:', err);
+            }
+        }
 
         function createSlotElement(slot) {
             const div = document.createElement('div');
             div.id = `slot-${slot.id}`;
-            // Use absolute positioning with percentages to match config.js
             div.className = 'absolute rounded-lg overflow-hidden group';
             
-            // Convert to percentage and add a tiny gap by slightly reducing width/height (to simulate mosaic-gap)
-            // or just rely on the absolute coordinates. config.js w/h are exact fractions, so we'll subtract 4px from w/h for gap using calc()
             div.style.left = `calc(${slot.x * 100}% + 2px)`;
             div.style.top = `calc(${slot.y * 100}% + 2px)`;
             div.style.width = `calc(${slot.w * 100}% - 4px)`;
             div.style.height = `calc(${slot.h * 100}% - 4px)`;
 
-            if (!slot.active) {
-                // Inactive slots are completely invisible
-                return div;
-            }
+            if (!slot.active) return div;
 
-            // Active slots remain invisible until filled (no borders or background)
-            // div.classList.add('border', 'border-tertiary/20', 'shadow-[0_0_15px_rgba(211,187,255,0.1)]');
-            
-            // Inner photo container
             const photoDiv = document.createElement('div');
             photoDiv.id = `photo-${slot.id}`;
-            // CSS 블렌딩 제거! 서버에서 이미 합성된 사진을 그대로 렌더링합니다.
             photoDiv.className = 'absolute inset-0 bg-cover bg-center transition-all duration-700';
-            
-            if (slot.filled && slot.imagePath) {
-                photoDiv.style.backgroundImage = `url(${slot.imagePath})`;
-            }
             div.appendChild(photoDiv);
 
-            // New Discovery chip (hidden by default)
             const chip = document.createElement('div');
             chip.id = `chip-${slot.id}`;
             chip.className = 'absolute top-2 right-2 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full animate-pulse shadow-lg backdrop-blur-md border border-secondary/30 hidden z-30';
@@ -197,21 +208,14 @@
             const chip = document.getElementById(`chip-${data.slotId}`);
             
             if (slotEl && photoDiv) {
-                // Apply stellar pop animation to the whole slot
                 slotEl.classList.remove('animate-stellar-pop');
-                // Force reflow
                 void slotEl.offsetWidth; 
                 
-                // Set new image
                 photoDiv.style.backgroundImage = `url(${data.imagePath})`;
-                
-                // Trigger animation
                 slotEl.classList.add('animate-stellar-pop', 'z-30', 'border-secondary/40');
                 
-                // Show 'New' chip
                 if(chip) {
                     chip.classList.remove('hidden');
-                    // Hide chip after a few seconds
                     setTimeout(() => {
                         chip.classList.add('hidden');
                         slotEl.classList.remove('z-30', 'border-secondary/40');
@@ -220,9 +224,8 @@
             }
         });
 
-        // 12칸 완성 이벤트
+        // 모자이크 완성
         socket.on('mosaic_complete', () => {
-            const container = document.getElementById('mosaic-container');
             if (container) {
                 container.style.transition = 'all 1s ease-in-out';
                 container.style.transform = 'scale(1.05)';
@@ -230,32 +233,35 @@
             }
         });
 
-        // 부분 리셋 이벤트 (6칸 유지, 6칸 비우기)
+        // 부분 리셋 (동적 슬롯 개수 반영)
         socket.on('partial_reset', (data) => {
             const keepIds = data.keepIds || [];
-            const container = document.getElementById('mosaic-container');
             
-            // 전체 팝 효과(축하 이펙트) 되돌리기
             if (container) {
                 container.style.transform = 'scale(1)';
                 container.style.boxShadow = 'none';
             }
 
-            // 슬롯들 중 keepIds에 없는 것들만 부드럽게 지우기
-            for (let i = 0; i < 12; i++) {
-                if (!keepIds.includes(i)) {
-                    const photoDiv = document.getElementById(`photo-${i}`);
+            currentGrid.forEach(slot => {
+                if (!keepIds.includes(slot.id)) {
+                    const photoDiv = document.getElementById(`photo-${slot.id}`);
                     if (photoDiv) {
-                        // 투명하게 페이드아웃
                         photoDiv.style.opacity = '0';
                         setTimeout(() => {
                             photoDiv.style.backgroundImage = 'none';
-                            photoDiv.style.opacity = '1'; // 다음 사진을 위해 투명도 원상복구
+                            photoDiv.style.opacity = '1';
                         }, 700);
                     }
                 }
-            }
+            });
         });
+
+        // 관리자가 설정 변경 시 즉시 새로고침
+        socket.on('config_updated', () => {
+            window.location.reload();
+        });
+
+        initializeDisplay();
     </script>
 </body>
 </html>

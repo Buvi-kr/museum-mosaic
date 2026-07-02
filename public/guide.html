@@ -141,6 +141,9 @@
             const keepCount = data.keepIds ? data.keepIds.length : 0;
             updateProgress(keepCount);
         });
+        socket.on('config_updated', () => {
+            window.location.reload();
+        });
     </script>
 </body>
 </html>

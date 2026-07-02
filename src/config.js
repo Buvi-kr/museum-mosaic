@@ -1,44 +1,62 @@
-// config.js
-// 여기만 수정하면 에셋 교체·격자 변경 가능. 코드 건드릴 필요 없음.
+const fs = require('fs');
+const path = require('path');
+const gridTemplates = require('./gridTemplates');
 
-const CONFIG = {
+const CONFIG_PATH = path.join(__dirname, '../data/config.json');
 
-  server: {
-    port: 3000,
-    thumbnail_size: 600,      // 업로드 사진 리사이즈 px (긴 변 기준)
-    backup_keep_days: 7,      // 백업 보관 일수
-  },
+// 설정값을 읽어오는 함수
+function loadConfig() {
+  let userConfig = {};
+  try {
+    const data = fs.readFileSync(CONFIG_PATH, 'utf8');
+    userConfig = JSON.parse(data);
+  } catch (err) {
+    console.error('config.json 읽기 실패, 기본값 사용');
+    userConfig = {
+      activeTemplate: '12-slot',
+      backgroundUrl: 'bg.jpg',
+      tuning: {
+        partialResetKeepCount: 6,
+        autoResetDelayMs: 5000,
+        blendMode: 'overlay',
+        blendAlpha: 0.7
+      }
+    };
+  }
 
-  canvas: {
-    width:  1920,
-    height: 1080,
-  },
+  // 병합된 최종 설정 객체 반환
+  return {
+    server: {
+      port: 3000,
+      thumbnail_size: 600,
+      backup_keep_days: 7,
+    },
+    canvas: {
+      width: 1920,
+      height: 1080,
+    },
+    assets: {
+      bg: userConfig.backgroundUrl,
+    },
+    blend: {
+      mode: userConfig.tuning.blendMode,
+      alpha: userConfig.tuning.blendAlpha,
+    },
+    tuning: userConfig.tuning,
+    activeTemplate: userConfig.activeTemplate,
+    grid: gridTemplates[userConfig.activeTemplate] || gridTemplates['12-slot']
+  };
+}
 
-  assets: {
-    bg:      'bg.jpg',           // 우주 배경
-  },
+// 설정값을 저장하는 함수
+function saveConfig(newConfig) {
+  const current = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+  const updated = { ...current, ...newConfig };
+  fs.writeFileSync(CONFIG_PATH, JSON.stringify(updated, null, 2), 'utf8');
+  return updated;
+}
 
-  blend: {
-    mode: 'overlay', // 오버레이 블렌딩 (어둡게 뭉개지는 현상 방지)
-    alpha: 0.7,      // 블렌드 강도 (0.0: 원색보존 ~ 1.0: 배경색감 강하게)
-  },
-
-  // 4x3 격자 — 비율값 (실제px = x * canvas.width)
-  // active: false 칸은 슬롯 등록 안 됨 (배경만 보임)
-  grid: [
-    { id:  0, row: 0, col: 0, x: 0.00, y: 0.0000, w: 0.25, h: 0.3333, active: true },
-    { id:  1, row: 0, col: 1, x: 0.25, y: 0.0000, w: 0.25, h: 0.3333, active: true },
-    { id:  2, row: 0, col: 2, x: 0.50, y: 0.0000, w: 0.25, h: 0.3333, active: true },
-    { id:  3, row: 0, col: 3, x: 0.75, y: 0.0000, w: 0.25, h: 0.3333, active: true },
-    { id:  4, row: 1, col: 0, x: 0.00, y: 0.3333, w: 0.25, h: 0.3333, active: true },
-    { id:  5, row: 1, col: 1, x: 0.25, y: 0.3333, w: 0.25, h: 0.3333, active: true },
-    { id:  6, row: 1, col: 2, x: 0.50, y: 0.3333, w: 0.25, h: 0.3333, active: true },
-    { id:  7, row: 1, col: 3, x: 0.75, y: 0.3333, w: 0.25, h: 0.3333, active: true },
-    { id:  8, row: 2, col: 0, x: 0.00, y: 0.6666, w: 0.25, h: 0.3333, active: true },
-    { id:  9, row: 2, col: 1, x: 0.25, y: 0.6666, w: 0.25, h: 0.3333, active: true },
-    { id: 10, row: 2, col: 2, x: 0.50, y: 0.6666, w: 0.25, h: 0.3333, active: true },
-    { id: 11, row: 2, col: 3, x: 0.75, y: 0.6666, w: 0.25, h: 0.3333, active: true },
-  ],
+module.exports = {
+  loadConfig,
+  saveConfig
 };
-
-module.exports = CONFIG;
