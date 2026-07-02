@@ -357,18 +357,13 @@ async function autoSliceBg(inputImagePath, bgName) {
       const baseTop = Math.round(slot.y * CONFIG.canvas.height);
       const baseRight = Math.round((slot.x + slot.w) * CONFIG.canvas.width);
       const baseBottom = Math.round((slot.y + slot.h) * CONFIG.canvas.height);
-      
-      const left = baseLeft + 2;
-      const top = baseTop + 2;
-      const right = baseRight - 2;
-      const bottom = baseBottom - 2;
 
-      const width = right - left;
-      const height = bottom - top;
+      const width = baseRight - baseLeft;
+      const height = baseBottom - baseTop;
 
       const slicePath = path.join(templateDir, `slice_${slot.id}.jpg`);
       await sharp(finalBgPath)
-        .extract({ left, top, width, height })
+        .extract({ left: baseLeft, top: baseTop, width, height })
         .jpeg({ quality: 90 })
         .toFile(slicePath);
     }
